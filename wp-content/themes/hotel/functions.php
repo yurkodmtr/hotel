@@ -30,3 +30,42 @@ function changeSelectCity(){
     echo json_encode($data);
     die();
 }
+
+
+// cache example
+/*
+if (!isset($_POST['url'])) {
+        echo json_encode(array(
+            'error' => true,
+            'code' => 503,
+            'message' => 'bad_request',
+        ));
+        die();
+    }
+
+    $url = trim($_POST['url']);
+
+    $uid = md5($url);
+    $cacheId = 'parse_' . $uid;
+    $cache = new FileCache(array(
+        'name' => $cacheId,
+        'path' => dirname(__FILE__) . DIRECTORY_SEPARATOR  . 'cache' . DIRECTORY_SEPARATOR,
+        'extension' => '.json'
+    ));
+    $cache->eraseExpired();
+    $cacheData = $cache->retrieve($cacheId);
+    if ($cacheData === null) {
+        $curl = new Curl();
+        $curl->setUrl($url);
+        $response = $curl->execute();
+
+        if(empty(trim($response))){
+            echo "line:L " . __LINE__;
+            die();
+        }
+        $cacheData = OgParser::parse($response);
+        $cache->store($cacheId, $cacheData, 86400);    
+    }
+    echo json_encode($cacheData);
+    die();
+*/

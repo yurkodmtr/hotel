@@ -2,14 +2,9 @@ var myApp = angular.module('myApp',[]);
 
 myApp.controller("welcomeController", function ($scope,$http) {
 
-    $scope.currentCity;
+    $scope.currentCity = '118593';
     $scope.hotelsByCity;
-    $scope.cityList = [
-        {
-            id: '118593', 
-            name: 'все города'
-        }
-    ];
+    $scope.cityList;
 
     $scope.initCitySelect = function(){
         $.ajax({
@@ -30,6 +25,26 @@ myApp.controller("welcomeController", function ($scope,$http) {
         });
     }
     $scope.initCitySelect();
+
+    $scope.initHotelsSelect = function(){
+        $.ajax({
+            url: urlAjax,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action:'changeSelectCity',
+                id: '118593'
+            },
+            success: function(data) {
+                $scope.hotelsByCity = data.hotel;                  
+                $scope.$apply();
+            },
+            error: function(data) {
+                
+            }
+        });
+    }
+    $scope.initHotelsSelect();
 
     $scope.changeSelectCity = function() {
         $.ajax({
