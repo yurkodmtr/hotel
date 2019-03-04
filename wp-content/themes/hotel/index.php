@@ -14,6 +14,8 @@
     <script src="<?php bloginfo('template_url');?>/app/libs/angular-datepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url');?>/app/libs/angular-datepicker.css">
 
+    <script src="<?php bloginfo('template_url');?>/app/libs/angular-sanitize.js"></script>
+
     <!-- app -->
     <script src="<?php bloginfo('template_url');?>/app/app.js?v=<?php echo time(); ?>"></script>
 
@@ -90,17 +92,51 @@
                 <button ng-click="searchHotels()">Искать</button>
             </div>
         </form>
-    </div>
 
-    <div class="loader" style="display:none;text-align:center;">loader</div>
+        найден предложений - {{countOfOffers}}
+        <div class="item__list">
+            <div class="item" ng-repeat="item in searchResult['hotelOffers']" style="padding:15px;border:1px solid grey;">
+                <div class="title">{{item['hotel']['name']}} - {{getHotelCategoryName(item['hotel']['hotelCategory']['id'])}}*</div>
+                <div>
+                    <div class="left__side" style="display:inline-block;width:45%;vertical-align:top;">
+                        <img ng-src="{{getMainImage(item['hotel']['image'])}}">
+                        <div class="descr">
+                            <div class="descr__item" ng-repeat="descr in item['hotel']['description']">
+                                <div ng-if="descr['description'] !== ''">
+                                    <div ng-bind-html="descr['description']"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right__side" style="display:inline-block;width:45%;verical-align:top;">
+                        <table style="border:1px solid black;">
+                            <tr>
+                                <td>номер</td>
+                                <td>питание</td>
+                                <td>условия отмены</td>
+                            </tr>
+                            <tr ng-repeat="room in item['hotel']['room']" ng-if="isObject(room)">
+                                <td>{{room['name']}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr ng-if="!isObject(room)" >
+                                <td>{{item['hotel']['room']['name']}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
     
 
-    <table class="table" style="width:100%;" border="1px">
-    	<tr>
-    		<td>Name</td>
-    		<td>Category</td>
-    	</tr>
-    </table>
+
+    
 
 
 

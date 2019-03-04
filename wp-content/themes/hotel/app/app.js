@@ -1,6 +1,7 @@
-var myApp = angular.module('myApp',['720kb.datepicker']);
+var myApp = angular.module('myApp',['720kb.datepicker','ngSanitize']);
 
 myApp.controller("welcomeController", function ($scope,$http) {
+    $scope.searchResult;
 
     $scope.loader = false;
     $scope.currentCity = '118593';
@@ -123,8 +124,12 @@ myApp.controller("welcomeController", function ($scope,$http) {
     };
 
     $scope.searchHotels = function(){
+        $scope.loader = true;
         var cityId = $scope.currentCity;
-        var hotelId = $('._hotel_name').val();
+        var hotelId = [];
+        if ($('._hotel_name').val() !== '') {
+            hotelId[0] = $('._hotel_name').val();
+        } 
         var hotelCategory;
         var checkInDate = $scope.checkInDate;
         checkInDate = checkInDate.toISOString().slice(0,10);
@@ -133,8 +138,9 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var childrenCounts = $scope.children;
         var childrenAges = [];
         $('.children_age select').each(function(){
-            $scope.nigtsCountList.push(i);
-        })
+            var val = $(this).val();
+            childrenAges.push(val);
+        });
 
         $.ajax({
             url: urlAjax,
@@ -152,13 +158,80 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 childrenAges : childrenAges
             },
             success: function(data) {
-                console.log('data1 - ', data);
+                $scope.loader = false;
+                $scope.searchResult = data;
+                console.log($scope.searchResult);
+                parseSearch();
             },
             error: function(data) {
-                console.log('data2 - ', data);
+                $scope.loader = false;
             }
         });
-
     }
+
+    $scope.countOfOffers = 0;
+    var parseSearch = function(){
+        $scope.countOfOffers = Object.keys($scope.searchResult['hotelOffers']).length;
+
+        $scope.$apply();        
+    }
+
+    $scope.getMainImage = function(data){
+        var res = baseUrl + '/images/no_img.jpg';;
+        if ( typeof data === 'undefined' ) {
+            return res;
+        }         
+        $.each( data, function( key, value ) {
+            if ( value['mainImage'] === true ) {
+                //res = value['url'];
+                res = value['url'].replace('http://test.bestoftravel.cz:8080','http://booking.realobs.com');
+            }
+        });
+        return res;
+    }
+
+    $scope.getHotelCategoryName = function(id){
+        switch (id) {
+            case 1:
+                return '1';
+                break;
+            case 2:
+                return '2';
+                break;
+            case 3:
+                return '3';
+                break;
+            case 4:
+                return '4';
+                break;
+            case 5:
+                return '5';
+                break;
+            case 6:
+                return 'Пансионат';
+                break;
+            case 7:
+                return 'Апартаменты';
+                break;
+            case 8:
+                return 'Вилла';
+                break;
+            case 9:
+                return 'Санаторий';
+                break;
+            case 10:
+                return 'Бунгало';
+                break;
+            case 11:
+                return 'Bed and breakfast';
+                break;            
+            default:
+                return 'no category';
+        }
+    }
+
+    $scope.isObject = function (value) {
+        return typeof value === 'object';
+    };
 
 });

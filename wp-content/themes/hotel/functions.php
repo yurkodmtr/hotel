@@ -53,7 +53,7 @@ function searcHotels(){
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'auth.php');
 
     $cityId = isset($_POST["cityId"]) && !empty($_POST["cityId"]) ? $_POST["cityId"] : '';
-    $hotelId = isset($_POST["hotelId"]) && !empty($_POST["hotelId"]) ? $_POST["hotelId"] : '';
+    $hotelId = isset($_POST["hotelId"]) && !empty($_POST["hotelId"]) ? $_POST["hotelId"] : [];
     $hotelCategory = isset($_POST["hotelCategory"]) && !empty($_POST["hotelCategory"]) ? $_POST["hotelCategory"] : '';
     $checkInDate = isset($_POST["checkInDate"]) && !empty($_POST["checkInDate"]) ? $_POST["checkInDate"] : '';
     $countOfNigts = isset($_POST["countOfNigts"]) && !empty($_POST["countOfNigts"]) ? $_POST["countOfNigts"] : '';
@@ -71,12 +71,26 @@ function searcHotels(){
         'availableOnly' => false,
         'persons' => [
             'adults' => $adultsCount,
-            'childAges' => []
+            'childAges' => $childrenAges,
         ],    
         'locationIds'=>[$cityId], 
-        'hotelIds'=>[], 
+        'hotelIds'=>$hotelId, 
         'hotelServices'=> []    
     );
+
+    // $parameters= array(
+    //     'outOperatorIncID' => $AuthCompanyId,
+    //     'dateFrom' => '2019-03-04',
+    //     'nightsDuration' => '3',
+    //     'availableOnly' => false,
+    //     'persons' => [
+    //         'adults' => '1',
+    //         'childAges' => $childrenAges,
+    //     ],    
+    //     'locationIds'=>[174005], 
+    //     'hotelIds'=>$hotelId, 
+    //     'hotelServices'=> []    
+    // );
 
 
     $data = json_encode($client->hotelSearchStep1($parameters));
