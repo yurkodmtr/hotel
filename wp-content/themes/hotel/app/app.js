@@ -1,6 +1,9 @@
 var myApp = angular.module('myApp',['720kb.datepicker','ngSanitize']);
 
 myApp.controller("welcomeController", function ($scope,$http) {
+
+    $scope.mealStatic;
+
     $scope.searchResult;
 
     $scope.loader = false;
@@ -65,6 +68,26 @@ myApp.controller("welcomeController", function ($scope,$http) {
         });
     }
     $scope.initCitySelect();
+
+    $scope.initMealStatic = function(){
+        $.ajax({
+            url: urlAjax,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action:'getMealStatic'
+            },
+            success: function(data) {
+                $scope.mealStatic = JSON.parse(data);
+                $scope.mealStatic = $scope.mealStatic['meal'];
+                $scope.$apply();
+            },
+            error: function(data) {
+                
+            }
+        });
+    }
+    $scope.initMealStatic();
 
     $scope.initHotelsSelect = function(){
 
@@ -158,10 +181,13 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 childrenAges : childrenAges
             },
             success: function(data) {
+                console.log(data);
                 $scope.loader = false;
                 $scope.searchResult = data;
-                console.log($scope.searchResult);
-                parseSearch();
+                if ( !$.isEmptyObject(data) ) {
+                    parseSearch();
+                } 
+                
             },
             error: function(data) {
                 $scope.loader = false;
@@ -172,7 +198,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
     $scope.countOfOffers = 0;
     var parseSearch = function(){
         $scope.countOfOffers = Object.keys($scope.searchResult['hotelOffers']).length;
-
         $scope.$apply();        
     }
 
@@ -233,5 +258,14 @@ myApp.controller("welcomeController", function ($scope,$http) {
     $scope.isObject = function (value) {
         return typeof value === 'object';
     };
+
+    $scope.getMealName = function(id){
+        $.each( $scope.mealStatic, function( key, value ) {
+            if ( value['id'] === id ) {
+                res = value['names']['ru'];           
+            }
+        });
+        return res;
+    }
 
 });

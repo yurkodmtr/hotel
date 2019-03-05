@@ -11,6 +11,15 @@ function getAllCities(){
     die();
 }
 
+/* get meal types */
+add_action('wp_ajax_getMealStatic', 'getMealStatic');
+add_action('wp_ajax_nopriv_getMealStatic', 'getMealStatic');  
+function getMealStatic(){ 
+    $str = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR .'meal.json');
+    echo json_encode($str);
+    die();
+}
+
 /* change sity */
 add_action('wp_ajax_changeSelectCity', 'changeSelectCity'); 
 add_action('wp_ajax_nopriv_changeSelectCity', 'changeSelectCity');  

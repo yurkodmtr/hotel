@@ -114,17 +114,40 @@
                             <tr>
                                 <td>номер</td>
                                 <td>питание</td>
+                                <td>цена</td>
                                 <td>условия отмены</td>
                             </tr>
                             <tr ng-repeat="room in item['hotel']['room']" ng-if="isObject(room)">
                                 <td>{{room['name']}}</td>
-                                <td></td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </td>
                                 <td></td>
                             </tr>
                             <tr ng-if="!isObject(room)" >
                                 <td>{{item['hotel']['room']['name']}}</td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <table>
+                                        <tr ng-repeat="meal in item['room']">
+                                            <td ng-if="item['hotel']['room']['id'] === meal['roomId']">
+                                                {{getMealName(meal['person']['meal']['id'])}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr ng-repeat="meal in item['room']">
+                                            <td ng-if="item['hotel']['room']['id'] === meal['roomId']">
+                                                {{meal['person']['price']['totalPrice']}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
                         </table>
                     </div>
