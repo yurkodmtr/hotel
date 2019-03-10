@@ -1,8 +1,8 @@
-var myApp = angular.module('myApp',['720kb.datepicker','ngSanitize']);
+var myApp = angular.module('myApp',['ngSanitize']);
 
 myApp.controller("welcomeController", function ($scope,$http) {
 
-    $scope.mealStatic;
+    $scope.mealStatic; 
 
     $scope.searchResult;
 
