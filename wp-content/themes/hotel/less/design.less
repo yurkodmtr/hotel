@@ -7,15 +7,15 @@ html, body {
 
 body { 
     .box-sizing(@sizing: border-box);
-    -webkit-appearance: none;
+    /*-webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
+    appearance: none;*/
     font-family: 'Gotham Pro';
     * {
         .box-sizing(@sizing: border-box);
-        -webkit-appearance: none;
+        /*-webkit-appearance: none;
         -moz-appearance: none;
-        appearance: none;
+        appearance: none;*/
         font-family: 'Gotham Pro';
     }
     *:focus {
@@ -84,6 +84,38 @@ body {
     -o-background-size: cover;
     background-size: cover;    
     padding:200px 0px 100px 0px;
+    .search_form {
+        .item {
+            .title {
+                color:#FFF;
+                font-size:16px;
+                margin-bottom:10px;
+            }
+            .input {
+                height:50px;
+                line-height:50px;
+                background:#FFF;
+                font-size:16px;
+                color:#101010;
+                .placeholder(#101010);
+                padding:0px 15px;
+                &__date {
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                }
+            }
+            .select {
+                height:50px;
+                line-height:50px;
+                background:#FFF;
+                font-size:16px;
+                color:#101010;
+                .placeholder(#101010);
+                padding:0px 15px;
+            }
+        }
+    }
 }
 
 .featured {
@@ -140,13 +172,7 @@ body {
     height:100%;
     background:rgba(0,0,0,0.6);
     &__wrap {
-        background-position: center center;
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover; 
-        background-image:url(../images/search_proccess__bg.jpg);
+        background:url(../images/pattern.jpg) repeat top center;
         text-align:center;
         padding:50px 0px;
         position:absolute;
@@ -162,6 +188,64 @@ body {
             @media screen and (max-width: 767px) {
                 font-size:22px;
             }
+        }
+    }
+}
+
+.result_block {
+    .filter {
+        border-bottom:3px solid #92a7b0;
+        background:#a5e3ff;
+        padding:50px 0px 25px 0px;
+        .title {
+            font-size:22px;
+            color:#0c0c0c;
+            font-weight:500;
+            margin-bottom:30px;
+        }
+        .row {
+            .flex-display(@display: flex);
+            @media screen and (max-width: 767px) {
+                display:block;
+            }
+            &__title {
+                margin-right:50px;
+                font-size:16px;
+                color:#0c0c0c;
+                font-weight:500;
+                @media screen and (max-width: 767px) {
+                    margin-right:0px;
+                    margin-bottom:25px;
+                }
+            }
+            .label_wrap {
+                .flex-grow(@grow: 1);
+                label {
+                    display:inline-block;
+                    margin-right:50px;
+                    margin-bottom:25px;
+                    @media screen and (max-width: 767px) {                        
+                        margin-right:25px;                        
+                    }
+                }
+            }
+        }
+    }
+    .result_list {
+        background:url(../images/pattern.jpg) repeat top center;
+        padding:50px 0px;
+        &__title {
+            font-size:26px;
+            line-height:30px;
+            color:#0c0c0c;
+            font-weight:500;
+            margin-bottom:10px;
+        }
+        &__subtitle {
+            font-size:18px;
+            line-height:22px;
+            color:#003cff;
+            margin-bottom:20px;
         }
     }
 }
@@ -194,8 +278,8 @@ body {
                 }
             }
             .title {
-                font-size:30px;
-                line-height:36px;
+                font-size:28px;
+                line-height:34px;
                 color:#101010;
                 margin-bottom:20px;
                 @media screen and (max-width: 979px) {
@@ -210,8 +294,8 @@ body {
             ul {
                 li {
                     a {
-                        font-size:20px;
-                        line-height:32px;
+                        font-size:18px;
+                        line-height:30px;
                         color:#0d0d0d;
                         display:inline-block;
                         text-decoration:underline;

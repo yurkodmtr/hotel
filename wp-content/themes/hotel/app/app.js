@@ -13,6 +13,8 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.checkInDate = new Date();
     $scope.checkOutDate = new Date();
+    $scope.checkOutDate.setDate($scope.checkOutDate.getDate() + 1);
+
     $scope.nigtsCount = '1';
     $scope.nigtsCountList = [];
 

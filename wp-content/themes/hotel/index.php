@@ -49,63 +49,55 @@
     <div class="welcome" style="background-image: url(<?php echo get_template_directory_uri();?>/images/welcome_bg.jpg);">
         <div class="center">
             <div class="loader" ng-if="loader">loading...</div>
-            <form>
-                <div class="row">
+            <form class="search_form">
+                <div class="item">
                     <div class="title">Страна</div>
-                    <input type="text" disabled="true" value="Словения">
+                    <input type="text" disabled="true" value="Словения" class="input">
                 </div>
 
-                <div class="row">
+                <div class="item">
                     <div class="title">Город/курорт</div>
-                    <select class="_city" ng-model="currentCity" ng-change="changeSelectCity()">
+                    <select class="_city select" ng-model="currentCity" ng-change="changeSelectCity()">
                         <option ng-repeat="option in cityList" value="{{option.id}}">{{option.name}}</option>             
                     </select>
                 </div>
 
-                <div class="row">
+                <div class="item">
                     <div class="title">Название отеля</div>
-                    <select class="_hotel_name">
+                    <select class="_hotel_name select">
                         <option ng-repeat="option in hotelsByCity" value="{{option.id}}">{{option.name}}</option>
                     </select>
                 </div>
 
-                <div class="row">
-                    <div class="title">Категория отеля</div>
-                    <select class="_hotel_category">
-                        <option>3*</option>
-                        <option>4*</option>
-                        <option>5*</option>
-                    </select>
-                </div>
-                <div class="row">
+                <div class="item">
                     <div class="title">Дата заезда</div>
-                    <input type="date" class="_check_in_date" ng-model="checkInDate" ng-change="nigtsCountCalc(checkInDate,checkOutDate)">
+                    <input type="date" class="_check_in_date input" ng-model="checkInDate" ng-change="nigtsCountCalc(checkInDate,checkOutDate)">
                 </div>
-                <div class="row">
+                <div class="item">
                     <div class="title">Дата выезда</div>
-                    <input type="date" class="_check_out_date" ng-model="checkOutDate" ng-change="nigtsCountCalc(checkInDate,checkOutDate)">
+                    <input type="date" class="_check_out_date input" ng-model="checkOutDate" ng-change="nigtsCountCalc(checkInDate,checkOutDate)">
                 </div>
-                <div class="row">
+                <div class="item">
                     <div class="title">Кол-во ночей</div>
-                    <select class="_nights_count" ng-model="nigtsCount" ng-change="nigtsCountDaysSelect()">
+                    <select class="_nights_count select" ng-model="nigtsCount" ng-change="nigtsCountDaysSelect()">
                         <option ng-repeat="option in nigtsCountList" value="{{option}}">{{option}}</option>             
                     </select>
                 </div>
-                <div class="row">
+                <div class="item">
                     <div class="title">Взрослые</div>
-                    <select class="_adults" ng-model="adults">
+                    <select class="_adults select" ng-model="adults">
                         <option ng-repeat="option in adultsList" value="{{option}}">{{option}}</option>             
                     </select>
                 </div>
-                <div class="row">
+                <div class="item">
                     <div class="title">Дети</div>
-                    <select class="_children" ng-model="children" ng-change="childrenSelect()">
+                    <select class="_children select" ng-model="children" ng-change="childrenSelect()">
                         <option ng-repeat="option in childrenList" value="{{option}}">{{option}}</option>             
                     </select>
                 </div>
-                <div class="children_age row">
+                <div class="children_age item">
                     <div class="title">Возраст</div>
-                    <div class="row" ng-repeat="item in childrenAgeArray">
+                    <div class="item" ng-repeat="item in childrenAgeArray">
                         <select>
                             <?php for ($i=0;$i<=18;$i++) : ?>
                             <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -183,79 +175,117 @@
         </div>
     </div>
 
-    <div class="result_block">
+    <div class="result_block" style="display:none;">
+
         <div class="filter">
-            
+            <div class="center">
+                <div class="title">
+                    Уточнить поиск
+                </div>
+                <div class="row">
+                    <div class="row__title">
+                        Питание
+                    </div>                
+                    <div class="label_wrap">
+                        <label>
+                            <input type="checkbox">
+                            Без питаия
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Завтрак
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Полупансион
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Полный пансион
+                        </label>
+                    </div>                
+                </div>
+            </div>            
         </div>
-        <div class="container">
-            <div class="title">Найдено 29 предложений</div>
-            <div class="subtitle">Стоимость указана за номер на весь срок прибывания</div>
-            <div class="item__list">
-                <div class="item">
-                    <div class="left_side">
-                        <figure>
-                            <img src="http://booking.realobs.com/booking/public/thumbnails/640/hotelImages/1/b/7/1b7fac846223b62de7639cecb3ca3472.jpg">
-                        </figure>
-                        <a href="#">Информация и фото отеля >>></a>
-                    </div>
-                    <div class="right_side">
-                        <div class="top">
-                            <div class="name">
-                                City Hotel Ljubljana
-                            </div>
-                            <div class="rating">
-                                <span></span>
-                            </div>
-                            <div class="city">
-                                Любляна
-                            </div>
+
+        <div class="result_list">
+            <div class="center">
+                <div class="result_list__title">Найдено 29 предложений</div>
+                <div class="result_list__subtitle">Стоимость указана за номер на весь срок прибывания</div>
+                <div class="item__list">
+                    <div class="item">
+                        <div class="left_side">
+                            <figure>
+                                <img src="http://booking.realobs.com/booking/public/thumbnails/640/hotelImages/1/b/7/1b7fac846223b62de7639cecb3ca3472.jpg">
+                            </figure>
+                            <a href="#">Информация и фото отеля >>></a>
                         </div>
-                        <div class="table">
-                            <ul>
-                                <li>Номер</li>
-                                <li>Питание</li>
-                                <li>Условия отмены</li>
-                                <li>Стоимость</li>
-                                <li></li>
-                            </ul>
-                            <ul>
-                                <li>Double Economy room</li>
-                                <li>Затрак</li>
-                                <li>
-                                    Бесплатная отмена до 28.02.2019
-                                    <span class="info">
-                                        <div class="info__title">?</div>
-                                        <div class="info__descr">
-                                            Бесплатная отмена до 28.02.2019
-                                        </div>
-                                    </span>
-                                </li>
-                                <li>153.97 EUR </li>
-                                <li>    
-                                    <a href="#" class="book">Забронировать</a>
-                                </li>
-                            </ul>
-                            <ul>
-                                <li></li>
-                                <li>Затрак</li>
-                                <li>
-                                    Бесплатная отмена до 28.02.2019
-                                    <span class="info">
-                                        <div class="info__title">?</div>
-                                        <div class="info__descr">
-                                            Бесплатная отмена до 28.02.2019
-                                        </div>
-                                    </span>
-                                </li>
-                                <li>153.97 EUR </li>
-                                <li>    
-                                    <a href="#" class="book">Забронировать</a>
-                                </li>
-                            </ul>
+                        <div class="right_side">
+                            <div class="top">
+                                <div class="name">
+                                    City Hotel Ljubljana
+                                </div>
+                                <div class="rating">
+                                    <span></span>
+                                </div>
+                                <div class="city">
+                                    Любляна
+                                </div>
+                            </div>
+                            <div class="table">
+                                <ul>
+                                    <li>Номер</li>
+                                    <li>Питание</li>
+                                    <li>Условия отмены</li>
+                                    <li>Стоимость</li>
+                                    <li></li>
+                                </ul>
+                                <ul>
+                                    <li>Double Economy room</li>
+                                    <li>Затрак</li>
+                                    <li>
+                                        Бесплатная отмена до 28.02.2019
+                                        <span class="info">
+                                            <div class="info__title">?</div>
+                                            <div class="info__descr">
+                                                Бесплатная отмена до 28.02.2019
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li>153.97 EUR </li>
+                                    <li>    
+                                        <a href="#" class="book">Забронировать</a>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li></li>
+                                    <li>Затрак</li>
+                                    <li>
+                                        Бесплатная отмена до 28.02.2019
+                                        <span class="info">
+                                            <div class="info__title">?</div>
+                                            <div class="info__descr">
+                                                Бесплатная отмена до 28.02.2019
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li>153.97 EUR </li>
+                                    <li>    
+                                        <a href="#" class="book">Забронировать</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+        </div>
+    </div>
+
+    <div class="book_block">
+        <div class="center">
+
         </div>
     </div>
 
