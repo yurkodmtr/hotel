@@ -32,6 +32,54 @@
     </div>
 </div>
 
+<div class="pop pop__mailchimp pop__mailchimp__success" style="display:block;">
+    <div class="table">
+        <div class="table-cell">
+            <div class="pop__content">
+                
+                <div class="block">  
+                    <div class="close _pop_close">
+                        <img src="<?php echo get_template_directory_uri();?>/images/pop_close.png" alt="">
+                    </div>                  
+                    <figure>
+                        <img src="<?php echo get_template_directory_uri();?>/images/mailchimp_success.jpg" alt="">
+                    </figure>
+                    <div class="description">                        
+                        <div class="title">Отлично!</div>
+                        <div class="descr">
+                            Теперь вы не пропустите самое интересное
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pop pop__mailchimp pop__mailchimp__error">
+    <div class="table">
+        <div class="table-cell">
+            <div class="pop__content">
+                
+                <div class="block">  
+                    <div class="close _pop_close">
+                        <img src="<?php echo get_template_directory_uri();?>/images/pop_close.png" alt="">
+                    </div>                  
+                    <figure>
+                        <img src="<?php echo get_template_directory_uri();?>/images/mailchimp_error.jpg" alt="">
+                    </figure>
+                    <div class="description">                        
+                        <div class="title">Что-то не так!</div>
+                        <div class="descr">
+                            Пожалуйста, попробуйте позже!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="wrap" ng-controller="welcomeController">
 
     <div class="header">
@@ -110,7 +158,7 @@
                 </div>
             </form>
 
-            найден предложений - {{countOfOffers}}
+            
             <div class="item__list">
                 <div class="item" ng-repeat="item in searchResult['hotelOffers']" style="padding:15px;border:1px solid grey;">
                     <div class="title">{{item['hotel']['name']}} - {{getHotelCategoryName(item['hotel']['hotelCategory']['id'])}}*</div>
@@ -210,7 +258,7 @@
 
         <div class="result_list">
             <div class="center">
-                <div class="result_list__title">Найдено 29 предложений</div>
+                <div class="result_list__title">Найдено {{countOfOffers}} предложений</div>
                 <div class="result_list__subtitle">Стоимость указана за номер на весь срок прибывания</div>
                 <div class="item__list">
                     <div class="item">
@@ -284,9 +332,209 @@
     </div>
 
     <div class="book_block">
-        <div class="center">
+        <div class="book_block__top">
+            <div class="center">
+                <div class="book_block__top__title">Бронирование</div>
 
+                <div class="info">
+
+                    <div class="info__title">
+                        <div class="name">
+                            City Hotel Ljubljana
+                            <div class="rating">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        
+                        <div class="city">
+                            Любляна
+                        </div>
+                    </div>
+
+                    <div class="info__wrap clearfix">
+                        <div class="info__left_side">
+                            <div class="period">
+                                Период проживания: 27.03.19 - 30.03.19 (3 ночи)
+                            </div>
+                            <div class="include">
+                                <div class="include__title">
+                                    В стоимость проживания включено:
+                                </div>
+                                <div class="include__descr">
+                                    туристический сбор
+                                    завтрак – шведский стол,
+                                    wi-fi,
+                                    библиотека отеля с газетами и другой литературой на разных языках,
+                                    аренда велосипеда и
+                                    тренажерный зал 24/7
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info__right_side">
+                            <div class="penalty">
+                                <div class="penalty__title">
+                                    Штрафные санкции при отмене бронирования!
+                                </div>
+                                <div class="penalty__descr">
+                                    Аннуляция брони без штрафа 2 дней до заезда <br>
+                                    Аннуляция брони 1 день до заезда или в день заезда: 100% штраф.
+                                </div>
+                            </div>
+                            <div class="link">
+                                <a href="#">Ознакомьтесь с условиями бронирования >>></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info_hotel">
+                    <div class="item__list">
+                        <div class="item">
+                            <div class="title">Тип номера</div>
+                            <div class="descr">
+                                Double Economy room
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="title">Питание</div>
+                            <div class="descr">
+                                Завтраки
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="title">Условия отмены</div>
+                            <div class="descr">
+                                Бесплатная отмена до 26.08.2020
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="title">Стоимость</div>
+                            <div class="descr">
+                                <span>412,24 EUR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+        <div class="book_block__bottom">
+            <div class="center">
+                <div class="book_block__bottom__title">Туристы</div>
+                <form class="form_tourists">
+                    <div class="row">
+                        <div class="row__title">
+                            Турист 1
+                        </div>
+                        <div class="row__wrapper">
+                            <div class="row__wrap">
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Имя</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Фамилия</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item row__item__crop">
+                                    <div class="item">
+                                        <div class="item__title">Дата рождения</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row__wrap">
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Серия/номер паспорта</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item row__item__crop">
+                                    <div class="item">
+                                        <div class="item__title">Срок действия паспорта</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Гражданство</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="row__title">
+                            Турист 2
+                        </div>
+                        <div class="row__wrapper">
+                            <div class="row__wrap">
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Имя</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Фамилия</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Дата рождения</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row__wrap">
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Серия/номер паспорта</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Срок действия паспорта</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Гражданство</div>
+                                        <input type="text" class="input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </form>
+
+                <div class="book_block__bottom__btns clearfix">
+                    <a href="#" class="back">
+                        <img src="<?php echo get_template_directory_uri();?>/images/book_back.png" alt="">
+                        Вернуться
+                    </a>
+                    <a class="submit">                        
+                        Далее
+                        <img src="<?php echo get_template_directory_uri();?>/images/book_next.png" alt="">
+                    </a>
+                </div> 
+
+            </div>
+        </div>  
+
+             
     </div>
 
     <div class="featured">
@@ -378,8 +626,8 @@
                 <div class="subtitle">
                     Получайте специальные цены для подписчиков
                 </div>
-                <form>
-                    <input type="text" placeholder="Ваш E-mail" class="input">
+                <form class="mailchimp">
+                    <input type="email" placeholder="Ваш E-mail" class="input">
                     <button type="submit" class="submit">Подписаться</button>
                 </form>
                 <div class="notice">

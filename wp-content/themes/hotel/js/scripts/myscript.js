@@ -2,9 +2,16 @@
 
 var myFunc = function(){
 
+	var popClose = function(){
+		$('._pop_close').click(function(){
+			$('.pop').fadeOut('slow');
+			$('body').css('overflow','visible');
+		});
+	}
+	
 
 	$(document).ready(function(){
-
+		popClose();
 	});
 
 	$(window).resize(function(){
@@ -18,3 +25,51 @@ var myFunc = function(){
 }
 
 myFunc();
+
+$(document).ready(function(){
+
+	function validateEmail(email) {
+	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(String(email).toLowerCase());
+	}
+
+	$('.mailchimp').submit(function(event){
+		event.preventDefault();
+		var email = $(this).find('input[type="email"]').val(); 
+
+		if (!validateEmail(email)) {
+			$('.mailchimp .input').addClass('error');
+			return false;
+		}
+
+		$('.mailchimp .input').removeClass('error');
+		$('.mailchimp .submit').addClass('loading');
+
+		$.ajax({
+            url: urlAjax,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action:'mailChimp',
+                email: email
+            },
+            success: function(data) {
+            	$('.mailchimp .submit').removeClass('loading');
+            	$('body').css('overflow','hidden');
+                $('.pop__mailchimp__success').fadeIn();
+                $('.mailchimp .input').val('');
+                setTimeout(function(){
+                	$('.pop').fadeOut('slow');
+                }, 5000);
+            },
+            error: function(data) {
+            	$('.mailchimp .submit').removeClass('loading');
+            	$('body').css('overflow','hidden');
+                $('.pop__mailchimp__error').fadeIn();
+                setTimeout(function(){
+                	$('.pop').fadeOut('slow');
+                }, 5000);
+            }
+        });
+	});
+});
