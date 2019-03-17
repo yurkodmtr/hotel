@@ -107,7 +107,7 @@ function searcHotels(){
 
     // $parameters= array(
     //     'outOperatorIncID' => $AuthCompanyId,
-    //     'dateFrom' => '2019-03-04',
+    //     'dateFrom' => $checkInDate,
     //     'nightsDuration' => '3',
     //     'availableOnly' => false,
     //     'persons' => [

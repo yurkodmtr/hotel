@@ -198,7 +198,7 @@
                 <div class="result_list__subtitle">Стоимость указана за номер на весь срок прибывания</div>
                 <div class="item__list">
 
-                    <div class="item" ng-repeat="item in checkIsArray(searchResult['hotelOffers'])">
+                    <div class="item" ng-repeat="item in searchResult['hotelOffers']">
                         
                         <div class="item__title">
                             <div class="name">
@@ -229,45 +229,131 @@
                             </div>
                             <div class="right_side">
 
-                                <div class="room" 
-                                    ng-repeat="itemRoom in checkIsArray(item['hotel']['room'])" 
-
-                                >
-                                    <div class="room__title" ng-if="checkIsShowRoom(itemRoom['id'],item['room'])">
-                                        {{itemRoom['name']}}
-                                    </div>     
-                                    <div class="room__item" 
-                                    ng-repeat="detailRoomItem in checkIsArray(item['room'])" 
-                                    ng-if="detailRoomItem['roomId'] == itemRoom['id'] &&  checkIsShowDetailRoom(detailRoomItem['cancelationPolicy']) ">
+                                <div class="room">
+                                    <div class="room__title">
+                                        Номер: {{item['hotel']['room']['name']}}
+                                    </div>
+                                    <div ng-class="$index >= 3 ? '_hide' :'not_hide' " class="room__item" ng-repeat="roomitem in item['room']" ng-if="item['room'][0]">
                                         <div class="info">
                                             <div class="info__row">
                                                 <div class="title">
                                                     Питание
                                                 </div>
                                                 <div class="descr">
-                                                    {{getMealName(detailRoomItem['person']['meal']['id'])}}
+                                                    {{getMealName(roomitem['person']['meal']['id'])}}
                                                 </div>
-                                            </div>   
+                                            </div>
+                                            <div class="info__row">
+                                                <div class="title">
+                                                    Условия отмены
+                                                </div>
+                                                <div class="descr">
+                                                    <span class="penalty" ng-if="!roomitem['cancelationPolicy'][0]">
+                                                        Штраф 
+                                                        {{roomitem['cancelationPolicy']['penalty']['totalPrice']}}
+                                                        {{roomitem['cancelationPolicy']['penalty']['currencyCode']}} 
+                                                        в случае отмены с 
+                                                        {{cancelationPolicyDate(roomitem['cancelationPolicy']['date'])}}
+                                                    </span> 
+
+                                                    <span class="penalty" ng-if="roomitem['cancelationPolicy'][0]">
+                                                        Бесплатная отмена до {{cancelationPolicyDate(roomitem['cancelationPolicy'][0]['date'])}}.
+                                                    </span> 
+
+                                                    <div class="tooltip" ng-if="roomitem['cancelationPolicy'][0]">
+                                                        <div class="tooltip__title">
+                                                            <img src="<?php echo get_template_directory_uri();?>/images/info.png" alt="">
+                                                        </div>
+                                                        <div class="tooltip__descr">
+                                                            <div class="tooltip__descr__close">
+                                                                <img src="<?php echo get_template_directory_uri();?>/images/pop_close.png" alt="">
+                                                            </div>
+                                                            Штраф 
+                                                            {{roomitem['cancelationPolicy'][1]['penalty']['totalPrice']}}
+                                                            {{roomitem['cancelationPolicy'][1]['penalty']['currencyCode']}} 
+                                                            в случае отмены с 
+                                                            {{cancelationPolicyDate(roomitem['cancelationPolicy'][1]['date'])}}
+                                                        </div>
+                                                    </div>                                                 
+                                                </div>
+                                            </div>
                                             <div class="info__row">
                                                 <div class="title">
                                                     Стоимость
                                                 </div>
                                                 <div class="descr">
                                                     <span class="price">
-                                                        {{detailRoomItem['person']['price']['totalPrice']}}
-                                                        {{detailRoomItem['person']['price']['currencyCode']}}
+                                                        {{roomitem['person']['price']['totalPrice']}}
+                                                        {{roomitem['person']['price']['currencyCode']}}
                                                     </span>
                                                 </div>
-                                            </div>                                         
+                                            </div>
                                         </div>
                                         <div class="btn">
                                             <a href="#">Забронировать</a>
                                         </div>
-                                    </div>                               
+                                    </div>
+                                    <div class="room__item" ng-if="!item['room'][0]">
+                                        <div class="info">
+                                            <div class="info__row">
+                                                <div class="title">
+                                                    Питание
+                                                </div>
+                                                <div class="descr">
+                                                    {{getMealName(item['room']['person']['meal']['id'])}}
+                                                </div>
+                                            </div>
+                                            <div class="info__row">
+                                                <div class="title">
+                                                    Условия отмены
+                                                </div>
+                                                <div class="descr">
+                                                    <span class="penalty" ng-if="!item['room']['cancelationPolicy'][0]">
+                                                        Штраф 
+                                                        {{item['room']['cancelationPolicy']['penalty']['totalPrice']}}
+                                                        {{item['room']['cancelationPolicy']['penalty']['currencyCode']}} 
+                                                        в случае отмены с 
+                                                        {{cancelationPolicyDate(item['room']['cancelationPolicy']['date'])}}
+                                                    </span> 
+
+                                                    <span class="penalty" ng-if="item['room']['cancelationPolicy'][0]">
+                                                        Бесплатная отмена до {{cancelationPolicyDate(item['room']['cancelationPolicy'][0]['date'])}}.
+                                                    </span> 
+
+                                                    <div class="tooltip" ng-if="item['room']['cancelationPolicy'][0]">
+                                                        <div class="tooltip__title">
+                                                            <img src="<?php echo get_template_directory_uri();?>/images/info.png" alt="">
+                                                        </div>
+                                                        <div class="tooltip__descr">
+                                                            <div class="tooltip__descr__close">
+                                                                <img src="<?php echo get_template_directory_uri();?>/images/pop_close.png" alt="">
+                                                            </div>
+                                                            Штраф 
+                                                            {{item['room']['cancelationPolicy'][1]['penalty']['totalPrice']}}
+                                                            {{item['room']['cancelationPolicy'][1]['penalty']['currencyCode']}} 
+                                                            в случае отмены с 
+                                                            {{cancelationPolicyDate(item['room']['cancelationPolicy'][1]['date'])}}
+                                                        </div>
+                                                    </div>                                                 
+                                                </div>
+                                            </div>
+                                            <div class="info__row">
+                                                <div class="title">
+                                                    Стоимость
+                                                </div>
+                                                <div class="descr">
+                                                    <span class="price">
+                                                        {{item['room']['person']['price']['totalPrice']}}
+                                                        {{item['room']['person']['price']['currencyCode']}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn">
+                                            <a href="#">Забронировать</a>
+                                        </div>
+                                    </div>
                                 </div>
-
-
-
                             </div>
                             <div class="clear"></div>
                             <div class="show_more">
