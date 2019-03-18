@@ -277,53 +277,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
         }
     }
 
-    // delete
-    $scope.getHotelCategoryName = function(id){
-        switch (id) {
-            case 1:
-                return '1';
-                break;
-            case 2:
-                return '2';
-                break;
-            case 3:
-                return '3';
-                break;
-            case 4:
-                return '4';
-                break;
-            case 5:
-                return '5';
-                break;
-            case 6:
-                return 'Пансионат';
-                break;
-            case 7:
-                return 'Апартаменты';
-                break;
-            case 8:
-                return 'Вилла';
-                break;
-            case 9:
-                return 'Санаторий';
-                break;
-            case 10:
-                return 'Бунгало';
-                break;
-            case 11:
-                return 'Bed and breakfast';
-                break;            
-            default:
-                return 'no category';
-        }
-    }
-
-    $scope.isObject = function (value) {
-        console.log(value); 
-        console.log(typeof value); 
-        return typeof value === 'object';
-    };
-
     $scope.getMealName = function(id){
         var res = '';
         $.each( $scope.mealStatic, function( key, value ) {
@@ -370,6 +323,10 @@ myApp.controller("welcomeController", function ($scope,$http) {
             return false;
         }
         return true;
+    }
+
+    $scope.hotelStarsFilter = function(item) {
+        console.log(item);
     }
 
 });

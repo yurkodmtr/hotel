@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <script>
-        window.urlAjax = 'https://<?php echo $_SERVER['HTTP_HOST'] ?>/wp-admin/admin-ajax.php';
+        window.urlAjax = 'http://<?php echo $_SERVER['HTTP_HOST'] ?>/wp-admin/admin-ajax.php';
         window.baseUrl = '<?php bloginfo('template_url');?>';
     </script>
 
@@ -197,9 +197,8 @@
                 <div class="result_list__title">Найдено {{countOfOffers}} предложений</div>
                 <div class="result_list__subtitle">Стоимость указана за номер на весь срок прибывания</div>
                 <div class="item__list">
-
-                    <div class="item" ng-repeat="item in checkIsArray(searchResult['hotelOffers'])">
-                        
+                    <input type="text" ng-model="search">
+                    <div class="item" ng-repeat="item in checkIsArray(searchResult['hotelOffers'])">                        
                         <div class="item__title">
                             <div class="name">
                                 {{item['hotel']['name']}}
@@ -248,6 +247,20 @@
                                                     {{getMealName(detailRoomItem['person']['meal']['id'])}}
                                                 </div>
                                             </div>   
+                                            <div class="info__row">
+                                                <div class="title">
+                                                    Условия отмены
+                                                </div>
+                                                <div class="descr" ng-if="detailRoomItem['cancelationPolicy'][0]">
+                                                    Бесплатная отмена до {{detailRoomItem['cancelationPolicy']['date']}}
+                                                    <span class="info">
+                                                        <div class="info__title">?</div>
+                                                        <div class="info__descr">
+                                                            Бесплатная отмена до 28.02.2019
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
                                             <div class="info__row">
                                                 <div class="title">
                                                     Стоимость
