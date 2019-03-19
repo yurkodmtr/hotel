@@ -30,12 +30,25 @@ var myFunc = function(){
 			$('.header .menu').removeClass('act');
 		});
 	}
+
+	var showMoreRooms = function(){
+		$('body').on('click', '.result_block .result_list .item__wrap .show_more a', function (){
+			if ( $(this).parent().hasClass('act') ) {
+				$(this).parent().removeClass('act');
+				$(this).closest('.item__wrap').find('.right_side').find('.room_toggle').addClass('_hide');
+			} else {
+				$(this).parent().addClass('act');
+				$(this).closest('.item__wrap').find('.right_side').find('.room_toggle').removeClass('_hide');
+			}			
+		});		
+	}
 	
 
 	$(document).ready(function(){
 		popClose();
 		tooltip();
 		menu();
+		showMoreRooms();
 	});
 
 	$(window).resize(function(){

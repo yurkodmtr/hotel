@@ -45,11 +45,12 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var date1 = second.split("-");
         date1 = new Date(date1[2], date1[1] - 1, date1[0]);
 
-        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var timeDiff = date1.getTime() - date2.getTime();
         $scope.nigtsCount = Math.ceil(timeDiff / (1000 * 3600 * 24)).toString();
     }
 
     $scope.nigtsCountDaysSelect = function(){
+        $('._nights_count').removeClass('error');
         var date = $scope.inDateModel.split("-");
         date = new Date(date[2], date[1] - 1, date[0]);
 
@@ -160,6 +161,14 @@ myApp.controller("welcomeController", function ($scope,$http) {
     };
 
     $scope.searchHotels = function(){
+
+        if ($scope.nigtsCount <=0 ) {
+            $('._nights_count').addClass('error');
+            return false;
+        }
+        $('._nights_count').removeClass('error');
+
+
         $scope.loader = true;
         var cityId = $scope.currentCity;
         var hotelId = [];
@@ -203,7 +212,12 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 if ( !$.isEmptyObject(data) ) {
                     parseSearch();
                     $('.result_block').show();
-                } 
+                    var scrollTo = $('#result_block').offset().top;
+                    console.log(scrollTo);
+                    $('html, body').animate({
+                        scrollTop: scrollTo,
+                    }, 1000);
+                }
                 
             },
             error: function(data) {
@@ -323,10 +337,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
             return false;
         }
         return true;
-    }
-
-    $scope.hotelStarsFilter = function(item) {
-        console.log(item);
-    }
+    }    
 
 });

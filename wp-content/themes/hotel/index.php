@@ -157,7 +157,7 @@
         </div>
     </div>
 
-    <div class="result_block">
+    <div class="result_block" id="result_block">
 
         <div class="filter">
             <div class="center">
@@ -197,7 +197,6 @@
                 <div class="result_list__title">Найдено {{countOfOffers}} предложений</div>
                 <div class="result_list__subtitle">Стоимость указана за номер на весь срок прибывания</div>
                 <div class="item__list">
-                    <input type="text" ng-model="search">
                     <div class="item" ng-repeat="item in checkIsArray(searchResult['hotelOffers'])">                        
                         <div class="item__title">
                             <div class="name">
@@ -230,7 +229,7 @@
 
                                 <div class="room" 
                                     ng-repeat="itemRoom in checkIsArray(item['hotel']['room'])" 
-
+                                    ng-class="$index >= 2 ? '_hide room_toggle' : ''"
                                 >
                                     <div class="room__title" ng-if="checkIsShowRoom(itemRoom['id'],item['room'])">
                                         {{itemRoom['name']}}
@@ -251,14 +250,42 @@
                                                 <div class="title">
                                                     Условия отмены
                                                 </div>
-                                                <div class="descr" ng-if="detailRoomItem['cancelationPolicy'][0]">
-                                                    Бесплатная отмена до {{detailRoomItem['cancelationPolicy']['date']}}
-                                                    <span class="info">
-                                                        <div class="info__title">?</div>
-                                                        <div class="info__descr">
-                                                            Бесплатная отмена до 28.02.2019
-                                                        </div>
+                                                <div class="descr">
+                                                    <span class="penalty" ng-repeat="penaltyItem in checkIsArray(detailRoomItem['cancelationPolicy'])">
+                                                        <span ng-if="penaltyItem['penalty']['totalPrice'] == '0'">     
+                                                            Бесплатная отмена до 
+                                                            {{cancelationPolicyDate(penaltyItem['date'])}}.
+                                                        </span>
+                                                        <span ng-if="penaltyItem['penalty']['totalPrice'] != '0' && $index === 0">
+                                                            Штраф 
+                                                            <b>{{penaltyItem['penalty']['totalPrice']}}
+                                                            {{penaltyItem['penalty']['currencyCode']}}</b>
+                                                            в случае отмены с
+                                                            {{cancelationPolicyDate(penaltyItem['date'])}}
+                                                        </span>
                                                     </span>
+                                                    
+                                                    <div class="tooltip" ng-if="checkIsArray(detailRoomItem['cancelationPolicy']).length > 1 ">
+                                                        <div class="tooltip__title">
+                                                            <img src="<?php echo get_template_directory_uri();?>/images/info.png" alt="">
+                                                        </div>
+                                                        <div class="tooltip__descr">
+                                                            <div class="tooltip__descr__close">
+                                                                <img src="<?php echo get_template_directory_uri();?>/images/pop_close.png" alt="">
+                                                            </div>
+                                                            <div class="tooltip__descr__item"
+                                                                ng-repeat="penaltyItem in checkIsArray(detailRoomItem['cancelationPolicy'])"
+                                                                ng-if="penaltyItem['penalty']['totalPrice'] != '0'"
+                                                            >
+                                                                Штраф 
+                                                                <b>{{penaltyItem['penalty']['totalPrice']}}
+                                                                {{penaltyItem['penalty']['currencyCode']}}</b>
+                                                                в случае отмены с 
+                                                                {{cancelationPolicyDate(penaltyItem['date'])}}
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="info__row">
@@ -279,12 +306,10 @@
                                     </div>                               
                                 </div>
 
-
-
                             </div>
                             <div class="clear"></div>
-                            <div class="show_more">
-                                <a href="#">
+                            <div class="show_more" ng-if="checkIsArray(item['hotel']['room']).length >2">
+                                <a>
                                     Другие номера
                                     <img src="<?php echo get_template_directory_uri();?>/images/show_more.png" alt="">
                                 </a>

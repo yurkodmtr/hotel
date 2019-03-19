@@ -277,6 +277,9 @@ body {
                 color:#101010;
                 .placeholder(#101010);
                 padding:0px 0px 0px 15px;
+                &.error {
+                    background-color:#ffbdbd;
+                }
             }            
         }
         .submit {
@@ -680,6 +683,16 @@ body {
                                                     right:5px;
                                                     top:5px;
                                                     cursor:pointer;
+                                                }
+                                                &__item {
+                                                    padding-bottom:5px;
+                                                    margin-bottom:5px;
+                                                    border-bottom:1px solid #d2d0d0;
+                                                    &:last-child {
+                                                        padding-bottom:0px;
+                                                        margin-bottom:0px;
+                                                        border-bottom:none;
+                                                    }
                                                 }
                                             }
                                             &.act {
