@@ -1,0 +1,14 @@
+app = angular.module('accountsApp', [
+    'chart.js',
+    'ui.router',
+    'pascalprecht.translate',
+    'tmh.dynamicLocale',
+    'ngSanitize',
+    'localytics.directives',
+    'colorpicker.module',
+    'revolunet.stepper',
+    'angularUtils.directives.dirPagination',
+    'ngAnimate',
+    'ngSanitize',
+    'ui.bootstrap'
+]);
