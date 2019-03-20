@@ -1,0 +1,446 @@
+<div class="content_block">
+    <div class="white_block">
+        <div class="input_1" style="margin: 0px">
+            <input ng-model="productsearch" placeholder="{{ 'PURCHASES_TPL.PH_SEARCH' | translate }}"/>
+        </div>
+    </div>
+    <div ng-controller="pagination" class="pagination-controller">
+        <div class="text-center">
+            <dir-pagination-controls
+                    boundary-links="true"
+                    on-page-change="pageChangeHandler(newPageNumber)"
+                    template-url="/js/views/pagination.html"
+            >
+            </dir-pagination-controls>
+        </div>
+    </div>
+    <div dir-paginate="purchase in purchases | filter: productsearch | itemsPerPage: 10" current-page="currentPage">
+        <div class="rebrand_custom" ng-if="purchase.is_activated == 1 && purchase.product_type_id == 3">
+            <div class="rebrand_custom__top">
+                <div class="item_block">
+                    <figure>
+                        <img ng-if="purchase.template_id == 26505" src="/images/noimage.jpg">
+                        <img ng-if="purchase.template_id != 26505" src="/images/noimage.jpg"
+                             ng-src="{{productPreview(purchase.template_id)}}">
+                        <span class="date left">
+                            {{ toTimestamp(purchase.datetime) | date:'longDate' : 'UTC'}}
+                        </span>
+                        <div class="clear"></div>
+                    </figure>
+                    <div class="descr">
+                        <a href="https://www.motocms.com/website-templates/{{locale}}/show.php?id={{purchase.template_id}}"
+                           ng-if="purchase._template && purchase._template.type_id && +purchase._template.type_id != 82"
+                           class="name">{{ 'PURCHASES_TPL.C_MOTOCMS_TEMPLATE_WITH_ID' | translate:purchase }}</a>
+                        <span class="id">{{ 'PURCHASES_TPL.C_PRODUCT_ID' | translate }}:</span>
+                        <span class="id_nubmer mar_b_0">{{purchase.id}}</span>
+                        <button ng-click="resendLicenseKey($event, purchase.id)"
+                                ng-if="+purchase.product_type_id == 3"
+                                class="btn__medium btn__orange"
+                                style="margin-bottom: 25px;">
+                            {{'PURCHASES_TPL.BTN_RESEND_LICENSE_KEY' | translate}}
+                        </button>
+                        <div class="descr" ng-if="purchase.client_version">
+                            <span>{{ 'PURCHASES_TPL.C_VERSION' | translate }}:</span>
+                            {{purchase.client_version}}
+                            <i ng-if="checkVersion(purchase) === true">&nbsp;&nbsp;&nbsp;&nbsp;{{ 'PURCHASES_TPL.C_MAXVERSION'
+                                | translate:maxversions[purchase.product_type_id] }}</i>
+                            <!--<br/><br/>-->
+                            <!--<a ng-if="purchase.client_version" ng-show="checkVersion(purchase)"-->
+                               <!--ng-click="requestUpdate(purchase)" class="btn__medium btn__grey">{{'PURCHASES_TPL.BTN_UPDATE'-->
+                                <!--| translate}}</a>-->
+                        </div>
+                        <div class="_update_subscription" ng-if="purchase && purchase._update && purchase._update.statusCode &&  purchase._update.dateExpired">
+                            <span class="id">{{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.LABEL_STATUS" | translate}}:</span>
+                            <span class="id_nubmer _purchase_update_color_green" ng-if="+purchase._update.statusCode === 3">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_FREE_LIFETIME" | translate}}
+                        </span>
+                            <span class="id_nubmer _purchase_update_color_green" ng-if="+purchase._update.statusCode === 2 || +purchase._update.statusCode === 5">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_FREE_FIRST_YEAR" | translate}}
+                        </span>
+                            <span class="id_nubmer _purchase_update_color_red" ng-if="+purchase._update.statusCode === 4">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_EXPIRED" | translate}}
+                        </span>
+                            <span class="id_nubmer _purchase_update_color_green" ng-if="+purchase._update.statusCode === 1">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_ACTIVE" | translate}}
+                        </span>
+                            <span class="id">{{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.LABEL_EXPIRATION_DATE" | translate}}:</span>
+                            <span class="id_nubmer" ng-if="+purchase._update.statusCode !== 3">
+                            {{ toTimestamp(purchase._update.dateExpired) | date:'longDate' : 'UTC'}}
+                        </span>
+                            <span class="id_nubmer" ng-if="+purchase._update.statusCode === 3">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.EXPIRATION_DATE_LIFETIME" | translate}}
+                        </span>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="rebrand_custom__bottom">
+                <div class="row clearfix">
+                    <article>
+                        <div class="descr"><span>{{ 'PURCHASES_TPL.C_DOMAIN' | translate }}:</span>{{purchase.domain}}
+                        </div>
+                        <div class="descr"><span>{{ 'PURCHASES_TPL.C_IP' | translate }}:</span>{{purchase.ip}}</div>
+                    </article>
+                    <article>
+                        <div class="descr dib marr25"><span>{{'REBRANDING_TPL.REBRANDING_TITLE' | translate}}</span>{{countLicenses}}
+                        </div>
+                        <button class="btn__medium btn__orange" ng-click="rebrandingPopupOpen();">
+                            {{"REBRANDING_TPL.BTN_PURCHASE" | translate}}
+                        </button>
+                    </article>
+                </div>
+                <div class="row clearfix">
+                    <article>
+                        <div class="descr">
+                            <span>{{ 'PURCHASES_TPL.C_STATUS' | translate }}:</span>
+                            <i class="color__green">{{ 'PURCHASES_TPL.C_ACTIVATED' | translate }}</i>
+                        </div>
+                        <div class="descr"><span>{{ 'PURCHASES_TPL.C_ACTIVATIONS_LEFT' | translate }}:</span>{{10-purchase.activation_count}}
+                        </div>
+                        <a ng-click="showReActivationPopup(purchase)"
+                           class="color__orange marr30 dib phone_tablet_marb15">{{ 'PURCHASES_TPL.BTN_REACTIVATE' |
+                            translate }}</a>
+                        <a ng-click="showDeActivationPopup(purchase)" class="color__orange dib phone_tablet_marb15">{{
+                            'PURCHASES_TPL.BTN_DEACTIVATE' | translate }}</a>
+                    </article>
+                    <article ng-if="countLicenses>0 && (purchase._template && purchase._template.type_id)">
+                        <div class="choosenSelect_1 select_box">
+                            <select ng-init="selectValue = purchase.brand"
+                                    ng-change="changeSelect(selectValue,purchase)"
+                                    chosen disable-search="true"
+                                    ng-model="selectValue"
+                                    ng-options="item as item.name for item in listBrands"
+                                    data-placeholder="{{'REBRANDING_TPL.CPT_SELECT_SOMTHING' | translate}}"
+                            >
+                                <option value=""></option>
+                            </select>
+                            <span class="error_text select_error_allready_{{purchase.id}}">{{ 'PURCHASES_TPL.ERR_ALLREADY_IN_USE' | translate }}</span>
+                            <span class="error_text select_error_select_somthing_{{purchase.id}}">{{ 'REBRANDING_TPL.ERR_SELECT_SOMTHING' | translate }}</span>
+                        </div>
+
+                        <a ng-click="selectValue=deactivetedBrand(purchase,selectValue);"
+                           class="color__orange dib phonemarb15 marr30"
+                           ng-show="selectValue.id == purchase.brand.id && selectValue.id!=0">
+                            {{ 'REBRANDING_TPL.BTN_UNBRAND' | translate }}
+                        </a>
+                        <a ng-click="activetedBrand(purchase,selectValue)"
+                           ng-hide="selectValue.id == purchase.brand.id && selectValue.id!=0"
+                           class="color__orange dib phonemarb15 marr30 ">
+                            {{ 'REBRANDING_TPL.BTN_REBRAND' | translate }}
+                        </a>
+                        <span class="rebrand_custom__bottom__logo"
+                              style="background-image:url({{purchase.brand.urlLogo}})"
+                              ng-if="selectValue.id == purchase.brand.id && selectValue.id!=0"></span>
+                    </article>
+                    <article ng-if="countLicenses == 0 && (purchase._template && purchase._template.type_id)">
+                        <div class="choosenSelect_1 select_box">
+                            <select ng-init="selectValue = purchase.brand"
+                                    ng-change="changeSelect(selectValue,purchase)"
+                                    chosen
+                                    disable-search="true"
+                                    ng-model="selectValue"
+                                    ng-options="item as item.name for item in listBrands"
+                                    data-placeholder="{{'REBRANDING_TPL.CPT_SELECT_SOMTHING' | translate}}"
+
+                            >
+                                <option value=""></option>
+                            </select>
+                            <span class="error_text select_error_allready_{{purchase.id}}">{{ 'PURCHASES_TPL.ERR_ALLREADY_IN_USE' | translate }}</span>
+                            <span class="error_text select_error_select_somthing_{{purchase.id}}">{{ 'REBRANDING_TPL.ERR_SELECT_SOMTHING' | translate }}</span>
+                        </div>
+                        <a ng-click="selectValue=deactivetedBrand(purchase,selectValue);"
+                           class="color__orange dib phonemarb15 marr30"
+                           ng-show="selectValue.id == purchase.brand.id && selectValue.id!=0">
+                            {{ 'REBRANDING_TPL.BTN_UNBRAND' | translate }}
+                        </a>
+                        <span ng-hide="selectValue.id == purchase.brand.id && selectValue.id!=0"
+                              class="descr dib phonemarb15 _cursor_pointer">
+                            {{ 'REBRANDING_TPL.BTN_REBRAND' | translate }}
+                        </span>
+                        <span class="rebrand_custom__bottom__logo"
+                              style="background-image:url({{purchase.brand.urlLogo}})"
+                              ng-if="selectValue.id == purchase.brand.id && selectValue.id!=0"></span>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="white_block_custom" ng-if="purchase.is_activated == 1 && purchase.product_type_id != 3">
+            <article>
+                <div class="white_block_custom__left">
+                    <section>
+                        <div class="item_block">
+                            <figure>
+                                <img ng-if="purchase.template_id == 26505" src="/images/noimage.jpg">
+                                <img ng-if="purchase.template_id != 26505" src="/images/noimage.jpg"
+                                     ng-src="{{productPreview(purchase.template_id)}}"
+                                     data-error="222">
+                                <span class="date left">{{ toTimestamp(purchase.datetime) | date:'longDate' : 'UTC'}}</span>
+                                <div class="clear"></div>
+                            </figure>
+                            <div class="descr">
+                                <a href="https://www.motocms.com/website-templates/{{locale}}/show.php?id={{purchase.template_id}}"
+                                   ng-if="purchase._template && purchase._template.type_id && +purchase._template.type_id != 82"
+                                   class="name">
+                                    {{ 'PURCHASES_TPL.C_MOTOCMS_TEMPLATE_WITH_ID' | translate:purchase }}
+                                </a>
+                                <span class="id">{{ 'PURCHASES_TPL.C_PRODUCT_ID' | translate }}:</span>
+                                <span class="id_nubmer">{{purchase.id}}</span>
+                                <button ng-click="resendLicenseKey($event, purchase.id)"
+                                        ng-if="+purchase.product_type_id == 3"
+                                        class="btn__medium btn__orange"
+                                        style="margin-bottom: 25px;">
+                                    {{'PURCHASES_TPL.BTN_RESEND_LICENSE_KEY' | translate}}
+                                </button>
+                                <div class="descr" ng-if="purchase.client_version">
+                                    <span>{{ 'PURCHASES_TPL.C_VERSION' | translate }}:</span>
+                                    {{purchase.client_version}}
+                                    <i ng-show="checkVersion(purchase)">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;{{ 'PURCHASES_TPL.C_MAXVERSION' |
+                                        translate:maxversions[purchase.product_type_id] }}
+                                    </i>
+                                </div>
+                                <div class="clear"></div>
+                                <a ng-if="purchase.client_version" ng-show="checkVersion(purchase)"
+                                   ng-click="requestUpdate(purchase)" class="btn__medium btn__grey">
+                                    {{ 'PURCHASES_TPL.BTN_UPDATE' | translate }}
+                                </a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </section>
+                </div>
+                <div class="white_block_custom__right">
+                    <section>
+                        <div class="descr">
+                            <span>{{ 'PURCHASES_TPL.C_DOMAIN' | translate }}:</span>
+                            {{purchase.domain}}
+                        </div>
+                        <div class="descr marb0">
+                            <span>{{ 'PURCHASES_TPL.C_IP' | translate }}:</span>{{purchase.ip}}
+                        </div>
+                    </section>
+                    <div class="line"></div>
+                    <section>
+                        <div class="descr"><span>{{ 'PURCHASES_TPL.C_STATUS' | translate }}:</span>
+                            <i class="color__green">{{ 'PURCHASES_TPL.C_ACTIVATED' | translate }}</i>
+                        </div>
+                        <div class="descr">
+                            <span>{{ 'PURCHASES_TPL.C_ACTIVATIONS_LEFT' | translate }}:</span>
+                            {{10-purchase.activation_count}}
+                        </div>
+                        <a ng-click="showReActivationPopup(purchase)" class="color__orange marr30 dib phonemarb15">
+                            {{ 'PURCHASES_TPL.BTN_REACTIVATE' | translate }}
+                        </a>
+                        <a ng-click="showDeActivationPopup(purchase)" class="color__orange dib phonemarb15">
+                            {{ 'PURCHASES_TPL.BTN_DEACTIVATE' | translate }}
+                        </a>
+                    </section>
+                </div>
+                <div class="clear"></div>
+            </article>
+        </div>
+
+        <div class="white_block" ng-if="purchase.is_activated == 0">
+            <div class="item_block">
+                <figure>
+                    <img ng-if="purchase.template_id == 26505" src="/images/noimage.jpg" class="grayscale">
+                    <img ng-if="purchase.template_id != 26505" src="/images/noimage.jpg"
+                         ng-src="{{productPreview(purchase.template_id)}}"
+                         class="grayscale">
+                    <span class="date left">{{ toTimestamp(purchase.datetime) | date:'longDate': 'UTC'}}</span>
+                    <div class="clear"></div>
+                </figure>
+                <div class="descr">
+                    <a href="https://www.motocms.com/website-templates/{{locale}}/show.php?id={{purchase.template_id}}"
+                       class="name"
+                       ng-if="purchase._template && purchase._template.type_id && +purchase._template.type_id != 82"
+                    >
+                        {{ 'PURCHASES_TPL.C_MOTOCMS_TEMPLATE_WITH_ID' | translate:purchase }}
+                    </a>
+                    <span class="id">{{ 'PURCHASES_TPL.C_PRODUCT_ID' | translate }}:</span>
+                    <span class="id_nubmer">{{purchase.id}}</span>
+
+                    <button ng-click="resendLicenseKey($event, purchase.id)"
+                            ng-if="+purchase.product_type_id == 3"
+                            class="btn__medium btn__orange"
+                            style="margin-bottom: 25px;">
+                        {{'PURCHASES_TPL.BTN_RESEND_LICENSE_KEY' | translate}}
+                    </button>
+
+                    <div class="_update_subscription" ng-if="purchase && purchase._update && purchase._update.statusCode &&  purchase._update.dateExpired">
+                        <span class="id">{{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.LABEL_STATUS" | translate}}:</span>
+                        <span class="id_nubmer _purchase_update_color_green" ng-if="+purchase._update.statusCode === 3">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_FREE_LIFETIME" | translate}}
+                        </span>
+                        <span class="id_nubmer _purchase_update_color_green" ng-if="+purchase._update.statusCode === 2 || +purchase._update.statusCode === 5">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_FREE_FIRST_YEAR" | translate}}
+                        </span>
+                        <span class="id_nubmer _purchase_update_color_red" ng-if="+purchase._update.statusCode === 4">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_EXPIRED" | translate}}
+                        </span>
+                        <span class="id_nubmer _purchase_update_color_green" ng-if="+purchase._update.statusCode === 1">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.STATUS_ACTIVE" | translate}}
+                        </span>
+                        <span class="id">{{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.LABEL_EXPIRATION_DATE" | translate}}:</span>
+                        <span class="id_nubmer" ng-if="+purchase._update.statusCode !== 3">
+                            {{ toTimestamp(purchase._update.dateExpired) | date:'longDate' : 'UTC'}}
+                        </span>
+                        <span class="id_nubmer" ng-if="+purchase._update.statusCode === 3">
+                            {{"PURCHASES_TPL.UPDATE_SUBSCRIPTION.EXPIRATION_DATE_LIFETIME" | translate}}
+                        </span>
+                    </div>
+                    <a ng-click="showActivationPopup(purchase)" class="btn__medium btn__orange pop_open_activation">
+                        {{ 'PURCHASES_TPL.BTN_ACTIVATE' | translate }}
+                    </a>
+
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="purchases.length < 1" class="white_block">
+        <h1>{{ 'PURCHASES_TPL.C_YOU_HAVE_NO_PURCHASES' | translate}}</h1>
+        <a href="http://motocms.com/website-templates/?lang={{locale}}" target="_blank" class="">
+            {{ 'PURCHASES_TPL.C_START_NOW' | translate}}
+        </a>
+    </div>
+    <div ng-controller="pagination" class="pagination-controller">
+        <div class="text-center">
+            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"
+                                     template-url="/js/views/pagination.html"></dir-pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+<div class="pop rebranding-popup rebranding-popup-buy_licenses" data-src="123">
+    <div class="poppp">
+        <div class="pop__bg"></div>
+        <div class="ppp">
+            <div class="pop__content">
+                <div class="pop__content__pack">
+                    <div class="pop__close" ng-click="popClose()"></div>
+                    <form name="formBuyRebranding">
+                        <h1 class="tac">
+                            {{"REBRANDING_TPL.REBRANDING_POPUP.TITLE" | translate}}
+                        </h1>
+                        <article class="pack_row clearfix">
+                            <div class="pack_descr">
+                                <div>
+                                    <div class="rebranding__price rebranding__row">
+                                        {{"REBRANDING_TPL.REBRANDING_POPUP.LICENSES_PRICE" | translate}} -
+                                        <span>{{rebrandingPrice}}{{currencySymbol}}/{{"REBRANDING_TPL.REBRANDING_POPUP.CPT_SITE" | translate}}</span>
+                                    </div>
+                                    <div class="input_1 rebranding__row" style="position:relative;"
+                                         ng-class="{error: formBuyRebranding.countRebranding.$error.pattern || formBuyRebranding.countRebranding.$error.require}">
+                                        <b class="rebranding__text">{{"REBRANDING_TPL.REBRANDING_POPUP.CPT_NEED" |
+                                            translate}}</b>
+                                        <input type="text" maxlength="2" class="input-placeholder"
+                                               ng-pattern="regexPattern.intNumber" name="countRebranding"
+                                               style="display:inline-block;width:45px;margin:0px 5px;text-align:center;"
+                                               ng-model="countRebranding" ng-init="countRebranding = 1">
+                                        <b class="rebranding__text">{{"REBRANDING_TPL.REBRANDING_POPUP.CPT_LICENSES" |
+                                            translate}}</b>
+                                        <span class="text__error text__error__buy_popup"
+                                              ng-show="formBuyRebranding.countRebranding.$error.pattern"
+                                              style="position:absolute;left:0px;bottom:0px;">
+                                        {{"REBRANDING_TPL.REBRANDING_POPUP.ERROR_PATTERN" | translate}}
+                                    </span>
+                                        <span class="text__error text__error__buy_popup"
+                                              ng-show="formBuyRebranding.countRebranding.$error.required"
+                                              style="position:absolute;left:0px;bottom:0px;">error required</span>
+                                    </div>
+                                    <div class="rebranding__price rebranding__row">
+                                        {{"REBRANDING_TPL.REBRANDING_POPUP.CPT_TOTAL_PRICE" | translate}}
+                                        <span>{{currencySymbol}}{{(countRebranding|number) * rebrandingPrice}}</span>
+                                    </div>
+                                    <div>
+                                        <button class="btn__medium btn__orange marr_25 rebranding_btn"
+                                                ng-click="createBuyLinkRebranding(countRebranding)" type="submit">
+                                            {{"REBRANDING_TPL.REBRANDING_POPUP.BTN_BUY" | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pop pop_deactivation">
+    <div class="poppp">
+        <div class="pop__bg"></div>
+        <div class="ppp">
+            <div class="pop__content">
+                <span ng-click="hideDeActivationPopup()" class="pop__close"></span>
+                <h1 class="padb15 tac fs20">{{ 'PURCHASES_TPL.POP_C_WANT_TO_DEACTIVATE' | translate }}</h1>
+                <div class="tac">
+                    <a ng-click="deActivate(currentProduct)" class="btn__big btn__orange marr10">{{
+                        'PURCHASES_TPL.POP_BTN_YES' | translate }}</a>
+                    <a ng-click="hideDeActivationPopup()" class="btn__big btn__grey marl10">{{
+                        'PURCHASES_TPL.POP_BTN_NO' | translate }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pop pop_activation">
+    <div class="poppp">
+        <div class="pop__bg"></div>
+        <div class="ppp">
+            <div class="pop__content">
+                <span ng-click="hideActivationPopup()" class="pop__close"></span>
+                <h1 class="padb15 tac">{{ activationPopupCaption | translate}}</h1>
+                <form class="activation" name="activationForm">
+                    <div class="row">
+                        <div class="coll_left">{{ 'PURCHASES_TPL.C_PRODUCT_ID' | translate }}:</div>
+                        <div class="coll_right">{{currentProduct.id}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="coll_left">{{ 'PURCHASES_TPL.C_ORDER_ID' | translate }}:</div>
+                        <div class="coll_right">{{currentProduct.order_id}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="coll_left">{{ 'PURCHASES_TPL.C_TEMPLATE_ID' | translate }}:</div>
+                        <div class="coll_right">#{{currentProduct.template_id}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="coll_left">
+                            <span>{{ 'PURCHASES_TPL.C_IP' | translate }}:</span>
+                        </div>
+                        <div class="coll_right">
+                            <div class="input_1" ng-class="{error: activationForm.ip.$error.pattern}">
+                                <input type="text" ng-model="productData.ip" placeholder="{{currentProduct.ip}}"
+                                       ng-pattern="ip_vld" name="ip"/>
+                                <span class="text__error" ng-show="activationForm.ip.$error.pattern">{{ 'VALIDATION_MESSAGES_TPL.MSG_IP' | translate }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="coll_left">
+                            <span>{{ 'PURCHASES_TPL.C_DOMAIN' | translate }}:</span>
+                        </div>
+                        <div class="coll_right">
+                            <div class="input_1" ng-class="{error: activationForm.domain.$invalid}">
+                                <input type="text" ng-model="productData.domain" placeholder="{{currentProduct.domain}}"
+                                       ng-minlength="0" ng-maxlength="100" name="domain"/>
+                                <span class="text__error" ng-show="activationForm.domain.$invalid">
+                                    {{ 'VALIDATION_MESSAGES_TPL.MSG_DOMAIN' | translate }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tac">
+                        <a ng-click="activateProduct(productData)" class="btn__big btn__orange">{{
+                            'PURCHASES_TPL.POP_BTN_ACTIVATE' | translate }} </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
