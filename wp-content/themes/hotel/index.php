@@ -166,12 +166,39 @@
                 </div>
                 <div class="row">
                     <div class="row__title">
+                        Категория
+                    </div>                
+                    <div class="label_wrap">
+                        <label>
+                            <input type="checkbox" ng-model="category_3" ng-click="filter('category_3')">
+                            3*
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            4*
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            5*
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Апартаменты
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Вилла
+                        </label>
+                    </div>                
+                </div>
+                <div class="row">
+                    <div class="row__title">
                         Питание
                     </div>                
                     <div class="label_wrap">
                         <label>
-                            <input type="checkbox">
-                            Без питаия
+                            <input type="checkbox" ng-model="meal_8" ng-click="filter('meal_8')">
+                            Без питания
                         </label>
                         <label>
                             <input type="checkbox">
