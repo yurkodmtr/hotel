@@ -26,7 +26,7 @@
 
 
 
-<div class="wrap" ng-controller="welcomeController">
+<div class="wrap" ng-controller="welcomeeController">
     <?php include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views\search_proccess.php'); ?>
     <div class="header">
         <div class="center">
@@ -170,23 +170,23 @@
                     </div>                
                     <div class="label_wrap">
                         <label>
-                            <input type="checkbox" ng-model="category_3" ng-click="filter('category','3')">
+                            <input type="checkbox" ng-model="category_3" ng-click="filter('category_3')">
                             3*
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="category_4" ng-click="filter('category','4')">
+                            <input type="checkbox">
                             4*
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="category_5" ng-click="filter('category','5')">
+                            <input type="checkbox">
                             5*
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="category_7" ng-click="filter('category','7')">
+                            <input type="checkbox">
                             Апартаменты
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="category_8" ng-click="filter('category','8')">
+                            <input type="checkbox">
                             Вилла
                         </label>
                     </div>                
@@ -197,19 +197,19 @@
                     </div>                
                     <div class="label_wrap">
                         <label>
-                            <input type="checkbox" ng-model="meal_8" ng-click="filter('meal','8')">
+                            <input type="checkbox" ng-model="meal_8" ng-click="filter('meal_8')">
                             Без питания
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="meal_1" ng-click="filter('meal','1')">
+                            <input type="checkbox">
                             Завтрак
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="meal_3" ng-click="filter('meal','3')">
+                            <input type="checkbox">
                             Полупансион
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="meal_5" ng-click="filter('meal','5')">
+                            <input type="checkbox">
                             Полный пансион
                         </label>
                     </div>                
@@ -217,10 +217,12 @@
             </div>            
         </div>
 
+
+
         <div class="result_list">
             <div class="center">
                 <div class="result_list__title">Найдено {{countOfOffers}} предложений</div>
-                <div class="result_list__subtitle" ng-if="countOfOffers!='0'">Стоимость указана за номер на весь срок прибывания</div>
+                <div class="result_list__subtitle">Стоимость указана за номер на весь срок прибывания</div>
                 <div class="item__list">
                     <div class="item" ng-repeat="item in checkIsArray(searchResult['hotelOffers'])">                        
                         <div class="item__title">
@@ -253,11 +255,11 @@
                             <div class="right_side">
 
                                 <div class="room" 
-                                    ng-repeat="itemRoom in checkIsArray(item['hotel']['room'])" 
-                                    ng-class="$index >= 2 && filtered === false ? '_hide room_toggle' : ''"
+                                    ng-repeat="itemRoom in getActualHotelRooms(item['hotel']['room'],item['room'])" 
+                                    ng-class="$index >= 2 ? '_hide room_toggle' : ''"
                                     ng-if="checkIsShowRoom(itemRoom['id'],item['room'])"
                                 >
-                                    <div class="room__title" ng-if="checkIsShowRoomTitle(itemRoom['id'],item['room'])">
+                                    <div class="room__title">
                                         {{itemRoom['name']}}
                                     </div>     
                                     <div class="room__item" 
@@ -334,7 +336,7 @@
 
                             </div>
                             <div class="clear"></div>
-                            <div class="show_more" ng-if="checkIsArray(item['hotel']['room']).length >2 && filtered === false">
+                            <div class="show_more" ng-if="checkIsArray(item['hotel']['room']).length >2">
                                 <a>
                                     Другие номера
                                     <img src="<?php echo get_template_directory_uri();?>/images/show_more.png" alt="">
