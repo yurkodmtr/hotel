@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <script>
-        window.urlAjax = 'http://<?php echo $_SERVER['HTTP_HOST'] ?>/wp-admin/admin-ajax.php';
+        window.urlAjax = "<?php echo admin_url('admin-ajax.php'); ?>";
         window.baseUrl = '<?php bloginfo('template_url');?>';
     </script>
 

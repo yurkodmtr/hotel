@@ -432,8 +432,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
                     index++;
                 }
             });
-
-            console.log('filteredData - ', filteredData);
             
 
             if (mealIdList.length > 0) {
@@ -446,16 +444,10 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
         var mealFunc = function(dataToSearchIn) {
 
-            console.log('dataToSearchIn - ', dataToSearchIn);
-
             var dataToSearch = staticData;
             if ( dataToSearchIn != undefined ) {
                 dataToSearch = $scope.checkIsArray(dataToSearchIn);
             }
-
-            console.log('dataToSearch - ', dataToSearch);
-
-
 
             $scope.filtered = true;
             var index = 0;
@@ -480,11 +472,12 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 }
             });
 
-
+            
 
             //todo
             var indexx = 0;
             $.each( $scope.checkIsArray(filteredData), function( key, value ) {
+
                 var res = [];
                 if (value['room'][0] === undefined) {
                     res[0] = value['room'];
@@ -501,11 +494,15 @@ myApp.controller("welcomeController", function ($scope,$http) {
                     }
                 }); 
 
-                filteredData[indexx]['room'] = roomWithId;
+                if ( roomWithId.length > 0 ) {
+                    filteredData[indexx]['room'] = roomWithId;
+                } else {
+                    delete filteredData[indexx];
+                }
+                
                 indexx++;
             });  
 
-            return false;          
 
             $scope.searchResult['hotelOffers'] = filteredData;  
         }
@@ -514,9 +511,9 @@ myApp.controller("welcomeController", function ($scope,$http) {
             categoryFunc();
         }
 
-        // if (mealIdList.length > 0 && categoryIdList.length < 1) {
-        //     mealFunc(staticData);
-        // }
+        if (mealIdList.length > 0 && categoryIdList.length < 1) {
+            mealFunc();
+        }
 
         if (categoryIdList.length < 1 && mealIdList.length < 1) {
             $scope.searchResult['hotelOffers'] = staticData;
