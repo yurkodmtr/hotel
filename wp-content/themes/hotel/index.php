@@ -151,11 +151,12 @@
 
                 <button ng-click="searchHotels()" class="submit">Найти лучшие цены</button>
             </form>
-
-            
             
         </div>
     </div>
+
+
+    
 
     <div class="result_block" id="result_block">
 
@@ -221,8 +222,8 @@
             <div class="center">
                 <div class="result_list__title">Найдено {{countOfOffers}} предложений</div>
                 <div class="result_list__subtitle" ng-if="countOfOffers!='0'">Стоимость указана за номер на весь срок прибывания</div>
-                <div class="item__list">
-                    <div class="item" ng-repeat="item in checkIsArray(searchResult['hotelOffers'])">                        
+                <div class="item__list" ng-if="countOfOffers!='0'">
+                    <div class="item" dir-paginate="item in checkIsArray(searchResult['hotelOffers']) | itemsPerPage: 10" current-page="currentPage">                        
                         <div class="item__title">
                             <div class="name">
                                 {{item['hotel']['name']}}
@@ -269,7 +270,7 @@
                                                     Питание
                                                 </div>
                                                 <div class="descr">
-                                                    {{getMealName(detailRoomItem['person']['meal']['id'])}}
+                                                    {{getMealName(detailRoomItem['person'])}}
                                                 </div>
                                             </div>   
                                             <div class="info__row">
@@ -320,8 +321,8 @@
                                                 </div>
                                                 <div class="descr">
                                                     <span class="price">
-                                                        {{detailRoomItem['person']['price']['totalPrice']}}
-                                                        {{detailRoomItem['person']['price']['currencyCode']}}
+                                                        {{getRoomPrice(detailRoomItem['person'])}}
+                                                        EUR
                                                     </span>
                                                 </div>
                                             </div>                                         
@@ -344,6 +345,17 @@
                         
                     </div>
 
+                </div>
+
+                <div class="pagination-controller">
+                    <div class="text-center">
+                        <dir-pagination-controls
+                                boundary-links="true"
+                                on-page-change="pageChangeHandler(newPageNumber)"
+                                template-url="<?php bloginfo('template_url');?>/pagination.html"
+                        >
+                        </dir-pagination-controls>
+                    </div>
                 </div>
             </div>
             

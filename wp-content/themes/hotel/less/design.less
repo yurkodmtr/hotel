@@ -1524,6 +1524,70 @@ body {
     }
 }
 
+.pagination {
+    text-align: center;
+    padding:15px;
+    background:#FFF;
+    .shadow;
+    margin-top:50px;
+    a {
+        text-decoration: none;
+        color: #aaaaaa;
+        font-size: 16px;
+        font-family: 'Open Sans', sans-serif;
+        &:hover {
+            color: #111221;
+        }
+    }    
+}
+.pagination .selected,
+.pagination .page,
+.pagination .previous,
+.pagination .last,
+.pagination .first,
+.pagination.next {
+    padding: 9px 14px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.pagination.extend {
+    color: #aaaaaa;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.pagination .page,
+.pagination .first,
+.pagination .last,
+.pagination .previous,
+.pagination .next {
+    font-size: 16px;
+    color: #aaaaaa;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid transparent;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.pagination .cart-preloader {
+    display: none;
+}
+
+.pagination .cart-preloader img {
+    width: 52px;
+    height: 52px;
+}
+
+.pagination .selected {
+    color: #ff7506;
+    border: 2px solid #ff7506;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+}
+
 .clear {
   clear: both;
 }

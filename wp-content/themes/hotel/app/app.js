@@ -1,7 +1,10 @@
-var myApp = angular.module('myApp',['720kb.datepicker','ngSanitize']);
+var myApp = angular.module('myApp',['720kb.datepicker','angularUtils.directives.dirPagination','ngSanitize']);
 
 
 myApp.controller("welcomeController", function ($scope,$http) {
+
+
+    $scope.currentPage = 1;
 
     $scope.inDateModel;
     $scope.inDate = new Date().toString();
@@ -34,6 +37,10 @@ myApp.controller("welcomeController", function ($scope,$http) {
        $scope.nigtsCountList.push(i);
        $scope.adultsList.push(i);
        $scope.childrenList.push(i);
+    }
+
+    $scope.jsonCopy = function (src) {
+        return JSON.parse(JSON.stringify(src));
     }
     
     $scope.dateChange = function(first,second){
@@ -162,6 +169,18 @@ myApp.controller("welcomeController", function ($scope,$http) {
         });        
     };
 
+    $scope.refreshFilter = function(){
+        $scope.category_3 = false;
+        $scope.category_4 = false;
+        $scope.category_5 = false;
+        $scope.category_7 = false;
+        $scope.category_8 = false;
+        $scope.meal_8 = false;
+        $scope.meal_1 = false;
+        $scope.meal_3 = false;
+        $scope.meal_5 = false;
+    }
+
     $scope.searchHotels = function(){
 
         if ($scope.nigtsCount <=0 ) {
@@ -170,7 +189,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
         }
         $('._nights_count').removeClass('error');
 
-
+        $scope.refreshFilter();
         $scope.loader = true;
         var cityId = $scope.currentCity;
         var hotelId = [];
@@ -210,9 +229,9 @@ myApp.controller("welcomeController", function ($scope,$http) {
             success: function(data) {
                 console.log(data);
                 $scope.loader = false;
-                $scope.searchResultStatic = Object.assign({}, data);
+                $scope.searchResultStatic = $scope.jsonCopy(data);
                 $scope.searchResult = data;
-                if ( !$.isEmptyObject(data) ) {
+                if ( !$.isEmptyObject(data) ) {                    
                     parseSearch();
                     $('.result_block').show();
                     var scrollTo = $('#result_block').offset().top;
@@ -220,6 +239,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                         scrollTop: scrollTo,
                     }, 1000);
                 } else {
+                    parseSearch();
                     $scope.loader = false;
                     $scope.$apply(); 
                     $('.result_block').show();
@@ -238,10 +258,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.countOfOffers = 0;
     var parseSearch = function(){
-        console.log('---');
-        console.log($scope.searchResult['hotelOffers']);
-        console.log(Object.keys($scope.checkIsArray($scope.searchResult['hotelOffers'])).length);
-        console.log('---');
         $scope.countOfOffers = Object.keys($scope.checkIsArray($scope.searchResult['hotelOffers'])).length;
         $scope.$apply();        
     }
@@ -305,7 +321,9 @@ myApp.controller("welcomeController", function ($scope,$http) {
         }
     }
 
-    $scope.getMealName = function(id){
+    $scope.getMealName = function(person){
+        var list = $scope.checkIsArray(person);
+        var id = list[0]['meal']['id'];
         var res = '';
         $.each( $scope.mealStatic, function( key, value ) {
             if ( value['id'] === id ) {
@@ -337,6 +355,14 @@ myApp.controller("welcomeController", function ($scope,$http) {
     }
 
 
+    $scope.getRoomPrice = function(data) {
+        var list = $scope.checkIsArray(data);
+        var price = 0;
+        $.each( list, function( key, value ) {
+            price += value['price']['totalPrice'];
+        });
+        return price;
+    }
 
 
     $scope.getActualHotelRooms = function(hotelrooms,rooms) {
@@ -360,7 +386,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
     $scope.checkIsShowRoom = function(itemRoomId,offerItem){
         var res = false;
         $.each( $scope.checkIsArray(offerItem), function( key, value ) {
-            if (value['roomId'] == itemRoomId) {
+            if (value['roomId'] == itemRoomId && value['cancelationPolicy'] !== undefined) {
                 res = true;
             }
         });
@@ -388,9 +414,14 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
 
     $scope.filtered = false;
-    $scope.filter = function(ev,id){
+    $scope.filter = function(ev,id){        
 
-        var staticData = $scope.checkIsArray($scope.searchResultStatic['hotelOffers']);
+        var staticData = $scope.jsonCopy($scope.checkIsArray($scope.searchResultStatic['hotelOffers']));
+
+        if (staticData === false) {
+            return false;
+        }
+
         var filteredData = {};
 
         var categoryIdList = [];        
@@ -434,7 +465,8 @@ myApp.controller("welcomeController", function ($scope,$http) {
             });
             
 
-            if (mealIdList.length > 0) {
+
+            if (mealIdList.length > 0 && Object.keys(filteredData).length > 0) {
                 mealFunc(filteredData);
                 return false;
             }
@@ -461,7 +493,11 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
                 var indexx = 0;
                 $.each( res, function( keyy, item ) {
-                    if ( mealIdList.includes(item['person']['meal']['id'])) {
+
+                    var list = $scope.checkIsArray(item['person']);
+                    var id = list[0]['meal']['id'];
+
+                    if ( mealIdList.includes(id) && item['cancelationPolicy'] != undefined) {
                         indexx++;
                     }
                 });
@@ -476,6 +512,11 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
             //todo
             var indexx = 0;
+            if (Object.keys(filteredData).length === 0) {
+                $scope.searchResult['hotelOffers'] = filteredData;  
+                return false;
+            }
+
             $.each( $scope.checkIsArray(filteredData), function( key, value ) {
 
                 var res = [];
@@ -487,8 +528,12 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
                 var roomWithId = [];
                 var roomWithIdIndex = 0;
-                $.each( res, function( keyy, valuee ) {   
-                    if( mealIdList.includes(valuee['person']['meal']['id'])) {
+                $.each( res, function( keyy, valuee ) {  
+
+                    var list = $scope.checkIsArray(valuee['person']);
+                    var id = list[0]['meal']['id'];
+
+                    if( mealIdList.includes(id)) {
                         roomWithId[roomWithIdIndex] = valuee;
                         roomWithIdIndex++;
                     }
