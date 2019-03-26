@@ -23,20 +23,20 @@ myApp.controller("welcomeController", function ($scope,$http) {
     $scope.hotelsByCity;
     $scope.cityList;
 
+    $scope.disabledHotelSelect = true;
+
     $scope.nigtsCount = '1';
     $scope.nigtsCountList = [];
 
     $scope.adultsList = [];
     $scope.adults = '1';
 
-    $scope.childrenList = [0];
     $scope.children = '0';
     $scope.childrenAgeArray = [];
 
     for (var i = 1; i <= 100; i++) {
        $scope.nigtsCountList.push(i);
        $scope.adultsList.push(i);
-       $scope.childrenList.push(i);
     }
 
     $scope.jsonCopy = function (src) {
@@ -128,17 +128,19 @@ myApp.controller("welcomeController", function ($scope,$http) {
             success: function(data) {
                 var data = JSON.parse(data);
                 $scope.hotelsByCity = data.hotel; 
-                $scope.hotelsByCity.unshift({id: '',name: 'все отели'});                 
+                $scope.hotelsByCity.unshift({id: '',name: 'все отели'});
+                $scope.disabledHotelSelect = false;                 
                 $scope.$apply();
             },
             error: function(data) {
-                
+                $scope.disabledHotelSelect = false;
             }
         });
     }
     $scope.initHotelsSelect();
 
     $scope.changeSelectCity = function() {
+        $scope.disabledHotelSelect = true;
         $.ajax({
             url: urlAjax,
             type: 'POST',
@@ -148,6 +150,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 id: $scope.currentCity
             },
             success: function(data) {
+                $scope.disabledHotelSelect = false;
                 var data = JSON.parse(data);
                 if ( typeof data.hotel !== 'undefined') {
                     $scope.hotelsByCity = data.hotel;   
@@ -164,6 +167,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
             },
             error: function(data) {
+                $scope.disabledHotelSelect = false;
                 $scope.$apply();
             }
         });        
@@ -383,6 +387,11 @@ myApp.controller("welcomeController", function ($scope,$http) {
         return arr;
     }
 
+    //todo проверть выводить ли отель если все комнаты не содержат cancelationPolicy - дефолтный поиск 3 ребенка по 0 лет
+    $scope.isShowHotel = function(item){
+        return true;
+    }
+
     $scope.checkIsShowRoom = function(itemRoomId,offerItem){
         var res = false;
         $.each( $scope.checkIsArray(offerItem), function( key, value ) {
@@ -510,7 +519,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
             
 
-            //todo
             var indexx = 0;
             if (Object.keys(filteredData).length === 0) {
                 $scope.searchResult['hotelOffers'] = filteredData;  

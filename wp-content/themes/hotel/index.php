@@ -102,7 +102,7 @@
                 </div>
                 <div class="item item__no_mar">
                     <div class="title">Название отеля</div>
-                    <select class="_hotel_name select">
+                    <select class="_hotel_name select" ng-disabled="disabledHotelSelect" ng-class="disabledHotelSelect ? 'disabled' : ''">
                         <option ng-repeat="option in hotelsByCity" value="{{option.id}}">{{option.name}}</option>
                     </select>
                 </div>
@@ -132,24 +132,31 @@
                         <option ng-repeat="option in adultsList" value="{{option}}">{{option}}</option>             
                     </select>
                 </div>
-                <div class="item item__crop">
-                    <div class="title">Дети</div>
-                    <select class="_children select" ng-model="children" ng-change="childrenSelect()">
-                        <option ng-repeat="option in childrenList" value="{{option}}">{{option}}</option>             
-                    </select>
-                </div>
-                <div class="children_age item item__crop">
-                    <div class="title">Возраст</div>
-                    <div class="item" ng-repeat="item in childrenAgeArray">
-                        <select>
-                            <?php for ($i=0;$i<=18;$i++) : ?>
-                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                            <?php endfor;?>
-                        </select>
-                    </div>
+
+                <div class="item item__no_mar">
+                    <div class="title">&nbsp;</div>
+                    <button ng-click="searchHotels()" class="submit">Найти лучшие цены</button>
                 </div>
 
-                <button ng-click="searchHotels()" class="submit">Найти лучшие цены</button>
+                <div class="item item__crop">
+                    <div class="title">Дети</div>
+                    <select class="_children select" ng-model="children" ng-change="childrenSelect()">      
+                        <?php for ($i=0;$i<=4;$i++) : ?>
+                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                        <?php endfor;?>     
+                    </select>
+                </div>
+
+                <div class="children_age item item__crop" ng-repeat="item in childrenAgeArray">
+                    <div class="title">Возраст</div>
+                    <select class="select">
+                        <?php for ($i=0;$i<=18;$i++) : ?>
+                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                        <?php endfor;?>
+                    </select>
+                </div>
+
+                
             </form>
             
         </div>
@@ -223,7 +230,12 @@
                 <div class="result_list__title">Найдено {{countOfOffers}} предложений</div>
                 <div class="result_list__subtitle" ng-if="countOfOffers!='0'">Стоимость указана за номер на весь срок прибывания</div>
                 <div class="item__list" ng-if="countOfOffers!='0'">
-                    <div class="item" dir-paginate="item in checkIsArray(searchResult['hotelOffers']) | itemsPerPage: 10" current-page="currentPage">                        
+                    <div 
+                        class="item" 
+                        dir-paginate="item in checkIsArray(searchResult['hotelOffers']) | itemsPerPage: 10" 
+                        current-page="currentPage"                        
+                        ng-if="isShowHotel(item)"
+                    >                        
                         <div class="item__title">
                             <div class="name">
                                 {{item['hotel']['name']}}
@@ -347,7 +359,7 @@
 
                 </div>
 
-                <div class="pagination-controller">
+                <div class="pagination-controller" ng-show="countOfOffers!='0'">
                     <div class="text-center">
                         <dir-pagination-controls
                                 boundary-links="true"
