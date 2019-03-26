@@ -105,21 +105,6 @@ function searcHotels(){
         'hotelServices'=> []    
     );
 
-    // $parameters= array(
-    //     'outOperatorIncID' => $AuthCompanyId,
-    //     'dateFrom' => $checkInDate,
-    //     'nightsDuration' => '3',
-    //     'availableOnly' => false,
-    //     'persons' => [
-    //         'adults' => '1',
-    //         'childAges' => $childrenAges,
-    //     ],    
-    //     'locationIds'=>[174005], 
-    //     'hotelIds'=>$hotelId, 
-    //     'hotelServices'=> []    
-    // );
-
-
     $data = json_encode($client->hotelSearchStep1($parameters));
 
     echo $data;

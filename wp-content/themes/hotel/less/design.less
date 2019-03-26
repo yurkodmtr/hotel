@@ -845,17 +845,44 @@ body {
                             margin-bottom:10px;
                         }
                         .include {
-                            &__title {
+                            strong {
                                 font-size:16px;
                                 line-height:22px;
                                 color:#0a0a0a;
                                 font-weight:500;
                                 margin-bottom:10px;
                             }
-                            &__descr {
+                            p {
                                 font-size:16px;
                                 line-height:22px;
                                 color:#0a0a0a;
+                                margin-top:22px;
+                                &:first-child {
+                                    margin-top:0px;
+                                }
+                            }
+                            ul {
+                                li {
+                                    font-size:16px;
+                                    line-height:22px;
+                                    color:#0a0a0a;
+                                    padding-left:10px;
+                                    position:relative;
+                                    &:before {
+                                        content:'';
+                                        display:block;
+                                        width:4px;
+                                        height:4px;
+                                        .rounded(50%);
+                                        background:#0a0a0a;
+                                        position:absolute;
+                                        left:0px;
+                                        top:11px;
+                                    }
+                                }
+                            }
+                            em {
+                                text-decoration:underline;
                             }
                         }
                     }
@@ -918,7 +945,8 @@ body {
                 .flex-basis(@width: 25%);
                 max-width:25%;
                 width:25%;
-                padding-left:20px;
+                padding-left:10px;
+                margin-left:10px;
                 border-left:1px solid #b7b7b7;
                 @media screen and (max-width: 767px) {
                     max-width:100%;
@@ -936,6 +964,7 @@ body {
                 }
                 &:first-child {
                     padding-left:0px;
+                    margin-left:0px;
                     border-left:0px;
                 }
                 .title {
@@ -981,7 +1010,10 @@ body {
                     font-size:22px;
                     color:#101010;
                     font-weight:500;
-                    margin-bottom:10px;                    
+                    margin-bottom:10px;
+                    span {
+                        font-size:16px;
+                    }                    
                 }
                 &__wrapper {
                     .flex-display(@display: flex);

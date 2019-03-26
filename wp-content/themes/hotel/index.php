@@ -233,8 +233,7 @@
                     <div 
                         class="item" 
                         dir-paginate="item in checkIsArray(searchResult['hotelOffers']) | itemsPerPage: 10" 
-                        current-page="currentPage"                        
-                        ng-if="isShowHotel(item)"
+                        current-page="currentPage"                         
                     >                        
                         <div class="item__title">
                             <div class="name">
@@ -340,7 +339,7 @@
                                             </div>                                         
                                         </div>
                                         <div class="btn">
-                                            <a href="#">Забронировать</a>
+                                            <a ng-click="goToBookBlock(item,itemRoom,detailRoomItem)">Забронировать</a>
                                         </div>
                                     </div>                               
                                 </div>
@@ -374,7 +373,7 @@
         </div>
     </div>
 
-    <div class="book_block">
+    <div class="book_block" id="book_block">
         <div class="book_block__top">
             <div class="center">
                 <div class="book_block__top__title">Бронирование</div>
@@ -383,36 +382,32 @@
 
                     <div class="info__title">
                         <div class="name">
-                            City Hotel Ljubljana
-                            <div class="rating">
+                            {{bookInfoOffer['hotel']['name']}}
+                            <div ng-if="isStar(bookInfoOffer['hotel']['hotelCategory']['id'])" class="rating rating_{{bookInfoOffer['hotel']['hotelCategory']['id']}}">
+                                <span></span>
+                                <span></span>
                                 <span></span>
                                 <span></span>
                                 <span></span>
                             </div>
+
+                            <div ng-if="!isStar(bookInfoOffer['hotel']['hotelCategory']['id'])" class="rating_text">
+                                - {{getHotelRatingText(bookInfoOffer['hotel']['hotelCategory']['id'])}}
+                            </div>
                         </div>
                         
                         <div class="city">
-                            Любляна
+                            {{getCityName(bookInfoOffer['hotel']['address']['city']['id'])}}
                         </div>
                     </div>
 
                     <div class="info__wrap clearfix">
                         <div class="info__left_side">
                             <div class="period">
-                                Период проживания: 27.03.19 - 30.03.19 (3 ночи)
+                                Период проживания: <br>
+                                {{inDateModel}} - {{outDateModel}} ({{nigtsCount}} ночи)
                             </div>
-                            <div class="include">
-                                <div class="include__title">
-                                    В стоимость проживания включено:
-                                </div>
-                                <div class="include__descr">
-                                    туристический сбор
-                                    завтрак – шведский стол,
-                                    wi-fi,
-                                    библиотека отеля с газетами и другой литературой на разных языках,
-                                    аренда велосипеда и
-                                    тренажерный зал 24/7
-                                </div>
+                            <div class="include" ng-if="getIncludedServices(bookInfoOffer) !== false" ng-bind-html="getIncludedServices(bookInfoOffer)">
                             </div>
                         </div>
                         <div class="info__right_side">
@@ -421,8 +416,19 @@
                                     Штрафные санкции при отмене бронирования!
                                 </div>
                                 <div class="penalty__descr">
-                                    Аннуляция брони без штрафа 2 дней до заезда <br>
-                                    Аннуляция брони 1 день до заезда или в день заезда: 100% штраф.
+                                    <ul ng-repeat="penaltyItem in checkIsArray(bookInfoDetailRoom['cancelationPolicy'])">
+                                        <li ng-if="penaltyItem['penalty']['totalPrice'] == '0'">     
+                                            Бесплатная отмена до 
+                                            {{cancelationPolicyDate(penaltyItem['date'])}}.
+                                        </li>
+                                        <li ng-if="penaltyItem['penalty']['totalPrice'] != '0' ">
+                                            Штраф 
+                                            <b>{{penaltyItem['penalty']['totalPrice']}}
+                                            {{penaltyItem['penalty']['currencyCode']}}</b>
+                                            в случае отмены с
+                                            {{cancelationPolicyDate(penaltyItem['date'])}}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                             <div class="link">
@@ -437,25 +443,37 @@
                         <div class="item">
                             <div class="title">Тип номера</div>
                             <div class="descr">
-                                Double Economy room
+                                {{bookInfoRoom['name']}}
                             </div>
                         </div>
                         <div class="item">
                             <div class="title">Питание</div>
                             <div class="descr">
-                                Завтраки
+                                {{getMealName(bookInfoDetailRoom['person'])}}
                             </div>
                         </div>
                         <div class="item">
                             <div class="title">Условия отмены</div>
                             <div class="descr">
-                                Бесплатная отмена до 26.08.2020
+                                <ul ng-repeat="penaltyItem in checkIsArray(bookInfoDetailRoom['cancelationPolicy'])">
+                                    <li ng-if="penaltyItem['penalty']['totalPrice'] == '0'">     
+                                        Бесплатная отмена до 
+                                        {{cancelationPolicyDate(penaltyItem['date'])}}.
+                                    </li>
+                                    <li ng-if="penaltyItem['penalty']['totalPrice'] != '0' ">
+                                        Штраф 
+                                        <b>{{penaltyItem['penalty']['totalPrice']}}
+                                        {{penaltyItem['penalty']['currencyCode']}}</b>
+                                        в случае отмены с
+                                        {{cancelationPolicyDate(penaltyItem['date'])}}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="item">
                             <div class="title">Стоимость</div>
                             <div class="descr">
-                                <span>412,24 EUR</span>
+                                <span>{{getRoomPrice(bookInfoDetailRoom['person'])}} EUR</span>
                             </div>
                         </div>
                     </div>
@@ -467,9 +485,11 @@
             <div class="center">
                 <div class="book_block__bottom__title">Туристы</div>
                 <form class="form_tourists">
-                    <div class="row">
+                    <div class="row" ng-repeat="person in checkIsArray(bookInfoDetailRoom['person'])">
                         <div class="row__title">
-                            Турист 1
+                            Турист {{$index+1}} 
+                            <span ng-if="person['ageType'] === 'adult' ">(взрослый)</span>
+                            <span ng-if="person['ageType'] === 'child' ">(ребенок)</span>
                         </div>
                         <div class="row__wrapper">
                             <div class="row__wrap">
@@ -500,53 +520,6 @@
                                     </div>
                                 </div>
                                 <div class="row__item row__item__crop">
-                                    <div class="item">
-                                        <div class="item__title">Срок действия паспорта</div>
-                                        <input type="text" class="input">
-                                    </div>
-                                </div>
-                                <div class="row__item">
-                                    <div class="item">
-                                        <div class="item__title">Гражданство</div>
-                                        <input type="text" class="input">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
-                    <div class="row">
-                        <div class="row__title">
-                            Турист 2
-                        </div>
-                        <div class="row__wrapper">
-                            <div class="row__wrap">
-                                <div class="row__item">
-                                    <div class="item">
-                                        <div class="item__title">Имя</div>
-                                        <input type="text" class="input">
-                                    </div>
-                                </div>
-                                <div class="row__item">
-                                    <div class="item">
-                                        <div class="item__title">Фамилия</div>
-                                        <input type="text" class="input">
-                                    </div>
-                                </div>
-                                <div class="row__item">
-                                    <div class="item">
-                                        <div class="item__title">Дата рождения</div>
-                                        <input type="text" class="input">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row__wrap">
-                                <div class="row__item">
-                                    <div class="item">
-                                        <div class="item__title">Серия/номер паспорта</div>
-                                        <input type="text" class="input">
-                                    </div>
-                                </div>
-                                <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Срок действия паспорта</div>
                                         <input type="text" class="input">
@@ -564,7 +537,7 @@
                 </form>
 
                 <div class="book_block__bottom__btns clearfix">
-                    <a href="#" class="back">
+                    <a class="back" ng-click="backToSearch()">
                         <img src="<?php echo get_template_directory_uri();?>/images/book_back.png" alt="">
                         Вернуться
                     </a>
