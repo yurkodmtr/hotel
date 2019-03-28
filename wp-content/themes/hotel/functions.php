@@ -108,9 +108,69 @@ function searcHotels(){
     $data = json_encode($client->hotelSearchStep1($parameters));
 
     echo $data;
-    die();
-    
+    die();    
 }
+
+//booking 
+add_action('wp_ajax_booking', 'booking'); 
+add_action('wp_ajax_nopriv_booking', 'booking');  
+function booking(){
+    include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'auth.php');
+
+    $client = new SoapClient("http://test.bestoftravel.cz:8080/booking/public/ws/book.wsdl", array( 'trace' => 1));
+    $client->__setSoapHeaders(Array(new WsseAuthHeader($AuthUser, $AuthPassword)));
+
+    $parameters= array(
+        'outOperatorIncID' => $AuthCompanyId,
+        'actions' => [
+            'addPerson' => [
+                'index' => 0,
+                'person' => [
+                    'outId' => 701,
+                    'name' => 'a1',
+                    'surname' => 'a2',
+                ],
+            ],
+            'addHotel' => [
+                'index' => 1,
+                'serviceOutId' => 445,
+                'hotelId' => 122970,
+                'contractGroupId' => 981308004,
+                'roomId' => 935190269,
+                'startDate' => '2019-03-29',
+                'endDate' => '2019-03-30',
+                'earlyBooking' => false,
+                'hotelPerson' => [
+                    'personOutId' => 701,
+                    'mealTypeId' => 1,
+                    'allocationType' => 'base',
+                    'ageType' => 'adult',
+                ],
+                'price' => [
+                    'availability' => 'available',
+                    'totalPrice' => '154.5',
+                    'currencyCode' => 'EUR',
+                ],
+                'penaltyKey' => [
+                    'nonRefundable' => false,
+                ],
+            ],
+            'addRequestComment' => [
+                'index' => 2,
+                'comment' => 'test',
+            ],
+        ],
+        'requestVersion' => [
+            'outId' => 100,
+            'version' => 1,
+        ],
+    );
+
+    $data = json_encode($client->book($parameters));
+    echo $data;
+    die();
+}
+//booking();
 
 
 // mailchimp

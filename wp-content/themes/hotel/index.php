@@ -485,11 +485,128 @@
             <div class="center">
                 <div class="book_block__bottom__title">Туристы</div>
                 <form class="form_tourists">
-                    <div class="row" ng-repeat="person in checkIsArray(bookInfoDetailRoom['person'])">
+                    <div 
+                        class="row _book_block_person person_{{$index}}" 
+                        ng-repeat="person in checkIsArray(bookInfoDetailRoom['person'])"
+                    > 
                         <div class="row__title">
                             Турист {{$index+1}} 
                             <span ng-if="person['ageType'] === 'adult' ">(взрослый)</span>
                             <span ng-if="person['ageType'] === 'child' ">(ребенок)</span>
+                        </div>
+                        <div class="row__wrapper">
+                            <div class="row__wrap">
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Имя</div>
+                                        <input type="text" class="input name">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Фамилия</div>
+                                        <input type="text" class="input lname">
+                                    </div>
+                                </div>
+                                <div class="row__item row__item__crop">
+                                    <div class="item">
+                                        <div class="item__title">Дата рождения</div>
+                                        <input type="text" class="input birthday">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row__wrap">
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Серия/номер паспорта</div>
+                                        <input type="text" class="input serialnum">
+                                    </div>
+                                </div>
+                                <div class="row__item row__item__crop">
+                                    <div class="item">
+                                        <div class="item__title">Срок действия паспорта</div>
+                                        <input type="text" class="input exp">
+                                    </div>
+                                </div>
+                                <div class="row__item">
+                                    <div class="item">
+                                        <div class="item__title">Гражданство</div>
+                                        <input type="text" class="input citizenship">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </form>
+
+                <div class="book_block__bottom__btns clearfix">
+                    <a class="back" ng-click="backToSearch()">
+                        <img src="<?php echo get_template_directory_uri();?>/images/book_back.png" alt="">
+                        Вернуться
+                    </a>
+                    <a class="submit" ng-click="completeBook()">                        
+                        Далее
+                        <img src="<?php echo get_template_directory_uri();?>/images/book_next.png" alt="">
+                    </a>
+                </div> 
+
+            </div>
+        </div>  
+
+             
+    </div>
+
+    <div class="confirm_block">
+        <div class="center">
+            <div class="confirm_block__title">
+                Ваше бронирование почти завершено
+            </div>
+            <div class="confirm_block__subtitle">
+                Пожалуйста, проверьте ваши данные и подтвердите бронирование
+            </div>
+            <div class="confirm_block__info">
+                <div class="item">
+                    <div class="item__title">
+                        Тип номера
+                    </div>
+                    <div class="item__descr">
+                        Double Economy room
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item__title">
+                        Питание
+                    </div>
+                    <div class="item__descr">
+                        Завтраки
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item__title">
+                        Условия отмены
+                    </div>
+                    <div class="item__descr">
+                        Бесплатная отмена до 26.08.2020
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item__title">
+                        Период проживания
+                    </div>
+                    <div class="item__descr">
+                        22.08.2010 -  26.08.2020
+                    </div>
+                </div>
+            </div>
+
+            <div class="book_block__bottom">
+                <div class="book_block__bottom__title">Туристы</div>
+                <form class="form_tourists">
+                    <div 
+                        class="row"
+                    > 
+                        <div class="row__title">
+                            Турист
                         </div>
                         <div class="row__wrapper">
                             <div class="row__wrap">
@@ -536,21 +653,40 @@
                     </div>
                 </form>
 
-                <div class="book_block__bottom__btns clearfix">
-                    <a class="back" ng-click="backToSearch()">
-                        <img src="<?php echo get_template_directory_uri();?>/images/book_back.png" alt="">
-                        Вернуться
-                    </a>
-                    <a class="submit">                        
-                        Далее
-                        <img src="<?php echo get_template_directory_uri();?>/images/book_next.png" alt="">
-                    </a>
+                <div class="confirm_block__bottom">
+                    
+                    <div class="right_side">
+                        <div class="price">
+                            <span>Стоимость бронироваия:</span>
+                            <b>412,24 EUR</b>
+                        </div>
+                        <div class="confirm_btn">
+                            <a>Подтверждаю бронирование</a>
+                        </div>
+                        <div class="agree_block">
+                            <div class="policy">
+                                Я согласен с <a href="#">политикой конфиденциальности</a>
+                            </div>
+                            <div class="agree">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" version="1.1" width="26px" height="26px">
+                                    <g><path style=" " d="M 22.566406 4.730469 L 20.773438 3.511719 C 20.277344 3.175781 19.597656 3.304688 19.265625 3.796875 L 10.476563 16.757813 L 6.4375 12.71875 C 6.015625 12.296875 5.328125 12.296875 4.90625 12.71875 L 3.371094 14.253906 C 2.949219 14.675781 2.949219 15.363281 3.371094 15.789063 L 9.582031 22 C 9.929688 22.347656 10.476563 22.613281 10.96875 22.613281 C 11.460938 22.613281 11.957031 22.304688 12.277344 21.839844 L 22.855469 6.234375 C 23.191406 5.742188 23.0625 5.066406 22.566406 4.730469 Z "/></g>
+                                    </svg>
+                                </span>
+                                Я ознакомился и согласен с <a href="#">условиями бронирования</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="left_side">
+                        <a class="back" ng-click="backToSearch()">
+                            <img src="<?php echo get_template_directory_uri();?>/images/book_back.png" alt="">
+                            Редактировать
+                        </a>
+                    </div>
                 </div> 
-
             </div>
-        </div>  
-
-             
+        </div> 
     </div>
 
     <div class="featured">
