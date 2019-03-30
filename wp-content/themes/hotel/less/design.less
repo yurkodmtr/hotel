@@ -212,6 +212,24 @@ body {
     }
 }
 
+.datepick {
+    position:relative;
+    .input {
+        padding-right:40px!important;
+    }
+    &:before {
+        content:'';
+        display:block;
+        width:28px;
+        height:30px;
+        position:absolute;
+        right:10px;
+        top:50%;
+        .translate(@y:-50%);
+        background:url(../images/datepick.png) no-repeat top center;
+    }
+}
+
 .welcome {
     background-position: center center;
     background-repeat: no-repeat;
@@ -220,24 +238,7 @@ body {
     -o-background-size: cover;
     background-size: cover;    
     padding:200px 0px 100px 0px;
-    .search_form {
-        .datepick {
-            position:relative;
-            .input {
-                padding-right:40px!important;
-            }
-            &:before {
-                content:'';
-                display:block;
-                width:28px;
-                height:30px;
-                position:absolute;
-                right:10px;
-                top:50%;
-                .translate(@y:-50%);
-                background:url(../images/datepick.png) no-repeat top center;
-            }
-        }
+    .search_form {        
         .item {
             width:31.62393162393162%;
             float:left;
@@ -1083,6 +1084,32 @@ body {
                 }
             }
         }
+        .comment { 
+            width:48.5%;
+            float:right;
+            .item {
+                &__title {
+                    font-size:16px;
+                    color:#101010;
+                    margin-bottom:5px;
+                }
+                .textarea {
+                    width:100%;
+                    padding:16px 15px 16px 15px;
+                    background:#FFF;
+                    .rounded(3px);
+                    font-size:16px;
+                    color:#070707;
+                    .placeholder(#070707);
+                    .shadow;
+                    resize:none;
+                    border:none;
+                    &.error {
+                        .bordercolor(#ff0000);
+                    }
+                }
+            }
+        }
     }
     &__bottom__btns {
         padding-top:30px;
@@ -1801,7 +1828,7 @@ body {
                     }
                 }
             }
-        }
+        }         
     }
 }
 

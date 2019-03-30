@@ -87,6 +87,8 @@
         </div>
     </div>
 
+
+
     <div class="welcome" style="background-image: url(<?php echo get_template_directory_uri();?>/images/welcome_bg.jpg);">
         <div class="center">
             <form class="search_form clearfix">
@@ -162,7 +164,7 @@
         </div>
     </div>
 
-
+     <div ng-click="completeBook()">111</div>
     
 
     <div class="result_block" id="result_block">
@@ -511,7 +513,13 @@
                                 <div class="row__item row__item__crop">
                                     <div class="item">
                                         <div class="item__title">Дата рождения</div>
-                                        <input type="text" class="input birthday">
+                                        <datepicker class="datepick" date-format="dd-MM-yyyy">
+                                            <input 
+                                                type="text" 
+                                                class="input birthday"
+                                                ng-class="person['ageType'] === 'child' ? '_child' : '' "
+                                            />
+                                        </datepicker>
                                     </div>
                                 </div>
                             </div>
@@ -537,6 +545,13 @@
                             </div>
                         </div>                        
                     </div>
+                    <div class="comment">
+                        <div class="item">
+                            <div class="item__title">Комментарий</div>
+                            <textarea class="textarea comment" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                 </form>
 
                 <div class="book_block__bottom__btns clearfix">

@@ -115,56 +115,88 @@ function searcHotels(){
 add_action('wp_ajax_booking', 'booking'); 
 add_action('wp_ajax_nopriv_booking', 'booking');  
 function booking(){
+
+
+
+    if ( !isset($_POST['data']) ) {
+        echo "bad params";
+        die();
+    }
+
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'auth.php');
 
-    $client = new SoapClient("http://test.bestoftravel.cz:8080/booking/public/ws/book.wsdl", array( 'trace' => 1));
-    $client->__setSoapHeaders(Array(new WsseAuthHeader($AuthUser, $AuthPassword)));
+    $persons = isset($_POST['data']['persons']) ? $_POST['data']['persons'] : '';
+    $addHotel = isset($_POST['data']['addHotel']) ? $_POST['data']['addHotel'] : '';
+
+    $addHotelhotelId = $addHotel['hotelId'] !== NULL ? $addHotel['hotelId'] : '';
+    $addHotelcontractGroupId = $addHotel['contractGroupId'] !== NULL ? $addHotel['contractGroupId'] : '';
+    $addHotelroomId = $addHotel['roomId'] !== NULL ? $addHotel['roomId'] : '';
+    $addHotelstartDate = $addHotel['startDate'] !== NULL ? $addHotel['startDate'] : '';
+    $addHotelendDate = $addHotel['endDate'] !== NULL ? $addHotel['endDate'] : '';
+    $addHotelearlyBooking = $addHotel['earlyBooking'] !== NULL ? $addHotel['earlyBooking'] : '';
+    $addHotelhotelPerson = $addHotel['hotelPerson'] !== NULL ? $addHotel['hotelPerson'] : '';
+    $addHotelpenaltyKey = $addHotel['penaltyKey']['nonRefundable'] !== NULL ? $addHotel['penaltyKey']['nonRefundable'] : '';
+    $addHotelpenaltyKeyId = $addHotel['penaltyKey']['id'] !== NULL ? $addHotel['penaltyKey']['id'] : '';
+
+    $addHotelhotelPrice = $addHotel['price'] !== NULL ? $addHotel['price'] : '';
+    $addHotelhotelPriceavailability = $addHotelhotelPrice['availability'] !== NULL ? $addHotelhotelPrice['availability'] : '';
+    $addHotelhotelPricetotalPrice = $addHotelhotelPrice['totalPrice'] !== NULL ? $addHotelhotelPrice['totalPrice'] : '';
+    $addHotelhotelPricecurrencyCode = $addHotelhotelPrice['currencyCode'] !== NULL ? $addHotelhotelPrice['currencyCode'] : '';
+
+    
+
+    $comment = isset($_POST['data']['addRequestComment']) ? $_POST['data']['addRequestComment'] : '';
 
     $parameters= array(
         'outOperatorIncID' => $AuthCompanyId,
         'actions' => [
             'addPerson' => [
                 'index' => 0,
-                'person' => [
-                    'outId' => 701,
-                    'name' => 'a1',
-                    'surname' => 'a2',
-                ],
+                'person' => $persons,
             ],
             'addHotel' => [
                 'index' => 1,
-                'serviceOutId' => 445,
-                'hotelId' => 122970,
-                'contractGroupId' => 981308004,
-                'roomId' => 935190269,
-                'startDate' => '2019-03-29',
-                'endDate' => '2019-03-30',
-                'earlyBooking' => false,
-                'hotelPerson' => [
-                    'personOutId' => 701,
-                    'mealTypeId' => 1,
-                    'allocationType' => 'base',
-                    'ageType' => 'adult',
-                ],
+                'serviceOutId' => '1',
+                'hotelId' => $addHotelhotelId,
+                'contractGroupId' => $addHotelcontractGroupId,
+                'roomId' => $addHotelroomId,
+                'startDate' => $addHotelstartDate,
+                'endDate' => $addHotelendDate,
+                'earlyBooking' => $addHotelearlyBooking,
+                'hotelPerson' => $addHotelhotelPerson,
                 'price' => [
-                    'availability' => 'available',
-                    'totalPrice' => '154.5',
-                    'currencyCode' => 'EUR',
+                    'availability' => $addHotelhotelPriceavailability,
+                    'totalPrice' => $addHotelhotelPricetotalPrice,
+                    'currencyCode' => $addHotelhotelPricecurrencyCode,
                 ],
                 'penaltyKey' => [
-                    'nonRefundable' => false,
+                    'id' => $addHotelpenaltyKeyId,
+                    'nonRefundable' => $addHotelpenaltyKey,
                 ],
             ],
             'addRequestComment' => [
                 'index' => 2,
-                'comment' => 'test',
+                'comment' => $comment,
             ],
         ],
         'requestVersion' => [
-            'outId' => 100,
+            'outId' => '106',
             'version' => 1,
         ],
     );
+
+
+    $client = new SoapClient("http://test.bestoftravel.cz:8080/booking/public/ws/book.wsdl", array( 'trace' => 1));
+    $client->__setSoapHeaders(Array(new WsseAuthHeader($AuthUser, $AuthPassword)));
+
+    try{
+        $data = json_encode($client->book($parameters));
+        echo $data;
+    } 
+    catch (Exception $ex) {
+        echo $ex->getMessage();
+    }
+    die();
 
     $data = json_encode($client->book($parameters));
     echo $data;
