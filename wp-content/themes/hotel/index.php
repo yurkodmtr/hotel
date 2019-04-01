@@ -163,9 +163,7 @@
             
         </div>
     </div>
-
-     <div ng-click="completeBook()">111</div>
-    
+   
 
     <div class="result_block" id="result_block">
 
