@@ -126,16 +126,31 @@ function booking(){
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'auth.php');
 
     $persons = isset($_POST['data']['persons']) ? $_POST['data']['persons'] : '';
+
     $addHotel = isset($_POST['data']['addHotel']) ? $_POST['data']['addHotel'] : '';
 
     $addHotelhotelId = $addHotel['hotelId'] !== NULL ? $addHotel['hotelId'] : '';
     $addHotelcontractGroupId = $addHotel['contractGroupId'] !== NULL ? $addHotel['contractGroupId'] : '';
     $addHotelroomId = $addHotel['roomId'] !== NULL ? $addHotel['roomId'] : '';
     $addHotelstartDate = $addHotel['startDate'] !== NULL ? $addHotel['startDate'] : '';
+
     $addHotelendDate = $addHotel['endDate'] !== NULL ? $addHotel['endDate'] : '';
     $addHotelearlyBooking = $addHotel['earlyBooking'] !== NULL ? $addHotel['earlyBooking'] : '';
+    if ( $addHotelearlyBooking == 'true' ) {
+        $addHotelearlyBooking = true;
+    } else {
+        $addHotelearlyBooking = false;
+    }
+
+
     $addHotelhotelPerson = $addHotel['hotelPerson'] !== NULL ? $addHotel['hotelPerson'] : '';
     $addHotelpenaltyKey = $addHotel['penaltyKey']['nonRefundable'] !== NULL ? $addHotel['penaltyKey']['nonRefundable'] : '';
+    if ( $addHotelpenaltyKey == 'true' ) {
+        $addHotelpenaltyKey = true;
+    } else {
+        $addHotelpenaltyKey = false;
+    }
+
     $addHotelpenaltyKeyId = $addHotel['penaltyKey']['id'] !== NULL ? $addHotel['penaltyKey']['id'] : '';
 
     $addHotelhotelPrice = $addHotel['price'] !== NULL ? $addHotel['price'] : '';
@@ -145,9 +160,11 @@ function booking(){
 
     
 
-    $comment = isset($_POST['data']['addRequestComment']) ? $_POST['data']['addRequestComment'] : '';
+    $comment = isset($_POST['data']['addRequestComment']['comment']) ? $_POST['data']['addRequestComment']['comment'] : '';
 
-    $parameters= array(
+    $version = time();
+
+    $parameters = array(
         'outOperatorIncID' => $AuthCompanyId,
         'actions' => [
             'addPerson' => [
@@ -156,7 +173,7 @@ function booking(){
             ],
             'addHotel' => [
                 'index' => 1,
-                'serviceOutId' => '1',
+                'serviceOutId' => 1,
                 'hotelId' => $addHotelhotelId,
                 'contractGroupId' => $addHotelcontractGroupId,
                 'roomId' => $addHotelroomId,
@@ -165,7 +182,7 @@ function booking(){
                 'earlyBooking' => $addHotelearlyBooking,
                 'hotelPerson' => $addHotelhotelPerson,
                 'price' => [
-                    'availability' => $addHotelhotelPriceavailability,
+                    'availability' => 'available',
                     'totalPrice' => $addHotelhotelPricetotalPrice,
                     'currencyCode' => $addHotelhotelPricecurrencyCode,
                 ],
@@ -180,10 +197,66 @@ function booking(){
             ],
         ],
         'requestVersion' => [
-            'outId' => '106',
+            'outId' => time(),
             'version' => 1,
         ],
     );
+    
+    // echo "<pre>";
+    // print_r($parameters);
+    // echo "</pre>";
+    
+    // $parameterss = array(
+    //     'outOperatorIncID' => $AuthCompanyId,
+    //     'actions' => [
+    //         'addPerson' => [
+    //             'index' => 0,
+    //             'person' => [
+    //                 'outId' => 701,
+    //                 'name' => 'a1',
+    //                 'surname' => 'a2',
+    //             ],
+    //         ],
+    //         'addHotel' => [
+    //             'index' => 1,
+    //             'serviceOutId' => 445,
+    //             'hotelId' => 122970,
+    //             'contractGroupId' => 981308004,
+    //             'roomId' => 935190269, 
+    //             'startDate' => '2019-04-02',
+    //             'endDate' => '2019-04-03',
+    //             'earlyBooking' => false,
+    //             'hotelPerson' => [
+    //                 'personOutId' => 701,
+    //                 'mealTypeId' => 1,
+    //                 'allocationType' => 'base',
+    //                 'ageType' => 'adult',
+    //             ],
+    //             'price' => [
+    //                 'availability' => 'available',
+    //                 'totalPrice' => '154.5',
+    //                 'currencyCode' => 'EUR',
+    //             ],
+    //             'penaltyKey' => [
+    //                 'id' => 13014,
+    //                 'nonRefundable' => false,
+    //             ],
+    //         ],
+    //         'addRequestComment' => [
+    //             'index' => 2,
+    //             'comment' => 'test',
+    //         ],
+    //     ],
+    //     'requestVersion' => [
+    //         'outId' => time(),
+    //         'version' => 1,
+    //     ], 
+    // );
+    
+    // echo "<pre>";
+    // print_r($parameterss);
+    // echo "</pre>";
+    // die();
 
 
     $client = new SoapClient("http://test.bestoftravel.cz:8080/booking/public/ws/book.wsdl", array( 'trace' => 1));

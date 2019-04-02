@@ -651,6 +651,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.completeBook = function(){
         var persons = [];
+        var personsIndex = 1;
         $('._book_block_person').each(function(){
             var name = $(this).find('.name').val();
             var lname = $(this).find('.lname').val();
@@ -691,6 +692,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
             if (isError === false ) {
                 persons.push({
+                    outId: personsIndex,
                     name: name,
                     surname: lname,
                     birthday: birthday,
@@ -698,7 +700,8 @@ myApp.controller("welcomeController", function ($scope,$http) {
                     passportExpiration: exp,
                     citizenship: citizenship,
                 });
-            }             
+            }   
+            personsIndex++;          
         });
 
         if ( $('._book_block_person .input').hasClass('error') ) {
@@ -711,7 +714,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var hotelPerson = [];
         $.each( $scope.checkIsArray($scope.bookInfoDetailRoom['person']), function( index, value ) {
             hotelPerson.push({
-                personOutId : index,
+                personOutId : index+1,
                 mealTypeId : value['meal']['id'],
                 allocationType : value['allocationType'],
                 ageType : value['ageType'],
