@@ -42,9 +42,24 @@ var myFunc = function(){
 			}			
 		});		
 	}
+
+	var agreeCheckbox = function(){
+		$('.confirm_block .agree').click(function(){
+			if ( $(this).hasClass('act') ) {
+				$(this).removeClass('act');
+			} else {
+				$(this).addClass('act');
+			}
+
+			if ( $(this).hasClass('error') ) {
+				$(this).removeClass('error');
+			}
+		});
+	}
 	
 
 	$(document).ready(function(){
+		agreeCheckbox();
 		popClose();
 		tooltip();
 		menu();

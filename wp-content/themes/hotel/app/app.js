@@ -3,6 +3,7 @@ var myApp = angular.module('myApp',['720kb.datepicker','angularUtils.directives.
 
 myApp.controller("welcomeController", function ($scope,$http) {
 
+    $scope.personsToConfirm;
 
     $scope.currentPage = 1;
 
@@ -610,6 +611,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.backToSearch = function(){
         $('.book_block').hide();
+        $('.confirm_block').hide();
         $('.result_block').show();
         var scrollTo = $('#result_block').offset().top;
         $('html, body').animate({
@@ -649,7 +651,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.dataToBook = {};
 
-    $scope.completeBook = function(){
+    $scope.preCompleteBook = function(){
         var persons = [];
         var personsIndex = 1;
         $('._book_block_person').each(function(){
@@ -707,7 +709,101 @@ myApp.controller("welcomeController", function ($scope,$http) {
         if ( $('._book_block_person .input').hasClass('error') ) {
             return false;
         }
+
+        $scope.personsToConfirm = persons;
         
+        var totalPrice = $scope.getRoomPrice($scope.bookInfoDetailRoom['person']);
+        var comment = $('textarea.comment').val();
+
+        var hotelPerson = [];
+        $.each( $scope.checkIsArray($scope.bookInfoDetailRoom['person']), function( index, value ) {
+            hotelPerson.push({
+                personOutId : index+1,
+                mealTypeId : value['meal']['id'],
+                allocationType : value['allocationType'],
+                ageType : value['ageType'],
+            });
+        });
+
+        var checkInDate = $scope.inDateModel.split("-");
+        checkInDate = checkInDate[2] + '-' + checkInDate[1] + '-' + checkInDate[0];
+
+        var checkOutDate = $scope.outDateModel.split("-");
+        checkOutDate = checkOutDate[2] + '-' + checkOutDate[1] + '-' + checkOutDate[0];
+
+        $('.confirm_block ._comment').val(comment);
+        $('.book_block').hide();
+        $('.confirm_block').show();
+        var scrollTo = $('#confirm_block').offset().top;
+        $('html, body').animate({
+            scrollTop: scrollTo,
+        }, 1000);
+        
+    }
+
+    $scope.completeBook = function(){
+
+        if ( !$('.confirm_block .agree').hasClass('act') ) {
+            $('.confirm_block .agree').addClass('error');
+            return false;
+        }
+
+        $('.confirm_block .agree').removeClass('error');
+
+        var persons = [];
+        var personsIndex = 1;
+        $('._book_block_person').each(function(){
+            var name = $(this).find('.name').val();
+            var lname = $(this).find('.lname').val();
+            var birthday = $(this).find('.birthday').val();
+            var serialnum = $(this).find('.serialnum').val();
+            var exp = $(this).find('.exp').val();
+            var citizenship = $(this).find('.citizenship').val();
+
+            var isError = false;
+            if ( name.length < 2 ) {
+                $(this).find('.name').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.name').removeClass('error');
+                isError = false;
+            }
+
+            if ( lname.length < 2 ) {
+                $(this).find('.lname').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.lname').removeClass('error');
+                isError = false;
+            }
+
+            if ( $(this).find('.birthday').hasClass('_child') &&  birthday === '') {
+                $(this).find('.birthday').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.birthday').removeClass('error');
+                isError = false;
+            }
+
+            if (birthday !== '') {
+                birthday = birthday.split("-");
+                birthday = birthday[2] + '-' + birthday[1] + '-' + birthday[0];
+            }            
+
+            if (isError === false ) {
+                persons.push({
+                    outId: personsIndex,
+                    name: name,
+                    surname: lname,
+                    birthday: birthday,
+                    passportNumber: serialnum,
+                    passportExpiration: exp,
+                    citizenship: citizenship,
+                });
+            }   
+            personsIndex++;          
+        });
+
         var totalPrice = $scope.getRoomPrice($scope.bookInfoDetailRoom['person']);
         var comment = $('textarea.comment').val();
 
@@ -765,6 +861,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 console.log('2 - ', data);
             }
         });
+
     }
 
 

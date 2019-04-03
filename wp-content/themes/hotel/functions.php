@@ -182,7 +182,7 @@ function booking(){
                 'earlyBooking' => $addHotelearlyBooking,
                 'hotelPerson' => $addHotelhotelPerson,
                 'price' => [
-                    'availability' => 'available',
+                    'availability' => $addHotelhotelPriceavailability,
                     'totalPrice' => $addHotelhotelPricetotalPrice,
                     'currencyCode' => $addHotelhotelPricecurrencyCode,
                 ],
@@ -202,9 +202,10 @@ function booking(){
         ],
     );
     
-    // echo "<pre>";
-    // print_r($parameters);
-    // echo "</pre>";
+    echo "<pre>";
+    print_r($parameters);
+    echo "</pre>";
+    die();
     
     // $parameterss = array(
     //     'outOperatorIncID' => $AuthCompanyId,

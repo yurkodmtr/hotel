@@ -557,7 +557,7 @@
                         <img src="<?php echo get_template_directory_uri();?>/images/book_back.png" alt="">
                         Вернуться
                     </a>
-                    <a class="submit" ng-click="completeBook()">                        
+                    <a class="submit" ng-click="preCompleteBook()">                        
                         Далее
                         <img src="<?php echo get_template_directory_uri();?>/images/book_next.png" alt="">
                     </a>
@@ -569,7 +569,7 @@
              
     </div>
 
-    <div class="confirm_block">
+    <div class="confirm_block" id="confirm_block">
         <div class="center">
             <div class="confirm_block__title">
                 Ваше бронирование почти завершено
@@ -583,7 +583,7 @@
                         Тип номера
                     </div>
                     <div class="item__descr">
-                        Double Economy room
+                        {{bookInfoRoom['name']}}
                     </div>
                 </div>
                 <div class="item">
@@ -591,7 +591,7 @@
                         Питание
                     </div>
                     <div class="item__descr">
-                        Завтраки
+                        {{getMealName(bookInfoDetailRoom['person'])}}
                     </div>
                 </div>
                 <div class="item">
@@ -599,7 +599,19 @@
                         Условия отмены
                     </div>
                     <div class="item__descr">
-                        Бесплатная отмена до 26.08.2020
+                        <ul ng-repeat="penaltyItem in checkIsArray(bookInfoDetailRoom['cancelationPolicy'])">
+                            <li ng-if="penaltyItem['penalty']['totalPrice'] == '0'">     
+                                Бесплатная отмена до 
+                                {{cancelationPolicyDate(penaltyItem['date'])}}.
+                            </li>
+                            <li ng-if="penaltyItem['penalty']['totalPrice'] != '0' ">
+                                Штраф 
+                                <b>{{penaltyItem['penalty']['totalPrice']}}
+                                {{penaltyItem['penalty']['currencyCode']}}</b>
+                                в случае отмены с
+                                {{cancelationPolicyDate(penaltyItem['date'])}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="item">
@@ -607,7 +619,7 @@
                         Период проживания
                     </div>
                     <div class="item__descr">
-                        22.08.2010 -  26.08.2020
+                        {{inDateModel}} - {{outDateModel}}
                     </div>
                 </div>
             </div>
@@ -617,6 +629,7 @@
                 <form class="form_tourists">
                     <div 
                         class="row"
+                        ng-repeat="person in personsToConfirm"
                     > 
                         <div class="row__title">
                             Турист
@@ -626,19 +639,19 @@
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Имя</div>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" disabled="true" value="{{person['name']}}">
                                     </div>
                                 </div>
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Фамилия</div>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" disabled="true" value="{{person['surname']}}">
                                     </div>
                                 </div>
                                 <div class="row__item row__item__crop">
                                     <div class="item">
                                         <div class="item__title">Дата рождения</div>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" disabled="true" value="{{person['birthday']}}">
                                     </div>
                                 </div>
                             </div>
@@ -646,24 +659,31 @@
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Серия/номер паспорта</div>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" disabled="true" value="{{person['passportNumber']}}">
                                     </div>
                                 </div>
                                 <div class="row__item row__item__crop">
                                     <div class="item">
                                         <div class="item__title">Срок действия паспорта</div>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" disabled="true" value="{{person['passportExpiration']}}">
                                     </div>
                                 </div>
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Гражданство</div>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" disabled="true" value="{{person['citizenship']}}">
                                     </div>
                                 </div>
                             </div>
                         </div>                        
                     </div>
+                    <div class="comment">
+                        <div class="item">
+                            <div class="item__title">Комментарий</div>
+                            <textarea class="textarea comment _comment" rows="5" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                 </form>
 
                 <div class="confirm_block__bottom">
@@ -671,10 +691,10 @@
                     <div class="right_side">
                         <div class="price">
                             <span>Стоимость бронироваия:</span>
-                            <b>412,24 EUR</b>
+                            <b>{{getRoomPrice(bookInfoDetailRoom['person'])}} EUR</b>
                         </div>
                         <div class="confirm_btn">
-                            <a>Подтверждаю бронирование</a>
+                            <a ng-click="completeBook()">Подтверждаю бронирование</a>
                         </div>
                         <div class="agree_block">
                             <div class="policy">
