@@ -832,6 +832,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var checkOutDate = $scope.outDateModel.split("-");
         checkOutDate = checkOutDate[2] + '-' + checkOutDate[1] + '-' + checkOutDate[0];
 
+        //mail
         $.ajax({
             url: urlAjax,
             type: 'POST',
@@ -860,18 +861,24 @@ myApp.controller("welcomeController", function ($scope,$http) {
                         },
                     },
                     addRequestComment : {
-                        comment : comment,
+                        comment : comment, 
                     },
                 },
             },
             success: function(data) {
-                console.log('1 - ', data);
+                
             },
             error: function(data) {
-                console.log('2 - ', data);
+                
             }
         });
 
+        
+        console.log(1);
+        
+        return false;
+        console.log(2);
+        //book
         $.ajax({
             url: urlAjax,
             type: 'POST',

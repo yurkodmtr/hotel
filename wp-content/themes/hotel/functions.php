@@ -129,7 +129,7 @@ function booking(){
 
     $addHotel = isset($_POST['data']['addHotel']) ? $_POST['data']['addHotel'] : '';
 
-    $addHotelhotelId = $addHotel['hotelId'] !== NULL ? $addHotel['hotelId'] : '';
+    $addHotelhotelId = $addHotel['hotelId'] !== NULL ? $addHotel['hotelId'] : '';    
     $addHotelcontractGroupId = $addHotel['contractGroupId'] !== NULL ? $addHotel['contractGroupId'] : '';
     $addHotelroomId = $addHotel['roomId'] !== NULL ? $addHotel['roomId'] : '';
     $addHotelstartDate = $addHotel['startDate'] !== NULL ? $addHotel['startDate'] : '';
@@ -282,10 +282,22 @@ function booking(){
 add_action('wp_ajax_bookInfoToEmail', 'bookInfoToEmail'); 
 add_action('wp_ajax_nopriv_bookInfoToEmail', 'bookInfoToEmail');  
 function bookInfoToEmail(){
-    echo "111";
-    die();
-    //wellcotravel@gmail.com
-});
+
+    if ( !isset($_POST['data']) ) {
+        echo "bad params, mail was not send";
+        die();
+    }
+
+    $to = '4au.4au.4au@gmail.com'; //wellcotravel@gmail.com
+    $subject = 'online.bestslovenia.com - book event';
+
+    ob_start();
+    include(dirname(__FILE__) . DIRECTORY_SEPARATOR . '/views/mail.php');
+    $message = ob_get_clean();
+
+    wp_mail( $to, $subject, $message );
+    
+}
 
 
 // mailchimp
