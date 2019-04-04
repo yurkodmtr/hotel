@@ -111,7 +111,7 @@
 
                 <div class="item item__crop">
                     <div class="title">Дата заезда</div>
-                    <datepicker class="datepick" date-set="{{inDate}}" date-format="dd-MM-yyyy">
+                    <datepicker class="datepick" date-set="{{inDate}}" date-format="dd-MM-yyyy" date-min-limit="{{inDateMin}}">
                         <input ng-model="inDateModel" type="text" class="input" ng-change="dateChange(inDateModel,outDateModel)"/>
                     </datepicker>
                 </div>

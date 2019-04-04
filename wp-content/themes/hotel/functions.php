@@ -161,6 +161,7 @@ function booking(){
     
 
     $comment = isset($_POST['data']['addRequestComment']['comment']) ? $_POST['data']['addRequestComment']['comment'] : '';
+    $comment = $comment != '' ? $comment : 'no comment';
 
     $version = time();
 
@@ -182,7 +183,7 @@ function booking(){
                 'earlyBooking' => $addHotelearlyBooking,
                 'hotelPerson' => $addHotelhotelPerson,
                 'price' => [
-                    'availability' => $addHotelhotelPriceavailability,
+                    'availability' => 'available', 
                     'totalPrice' => $addHotelhotelPricetotalPrice,
                     'currencyCode' => $addHotelhotelPricecurrencyCode,
                 ],
@@ -202,10 +203,10 @@ function booking(){
         ],
     );
     
-    echo "<pre>";
-    print_r($parameters);
-    echo "</pre>";
-    die();
+    // echo "<pre>";
+    // print_r($parameters);
+    // echo "</pre>";
+    // die();
     
     // $parameterss = array(
     //     'outOperatorIncID' => $AuthCompanyId,
@@ -277,6 +278,14 @@ function booking(){
     die();
 }
 //booking();
+
+add_action('wp_ajax_bookInfoToEmail', 'bookInfoToEmail'); 
+add_action('wp_ajax_nopriv_bookInfoToEmail', 'bookInfoToEmail');  
+function bookInfoToEmail(){
+    echo "111";
+    die();
+    //wellcotravel@gmail.com
+});
 
 
 // mailchimp
