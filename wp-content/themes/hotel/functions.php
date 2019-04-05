@@ -295,7 +295,10 @@ function bookInfoToEmail(){
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . '/views/mail.php');
     $message = ob_get_clean();
 
-    wp_mail( $to, $subject, $message );
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
+    wp_mail( $to, $subject, $message, $headers );
     
 }
 

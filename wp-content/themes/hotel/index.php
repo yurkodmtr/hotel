@@ -22,12 +22,12 @@
 <body ng-app="myApp">
 
 
-<?php include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views\pop__mailchimp.php'); ?>
+<?php include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views/pop__mailchimp.php'); ?>
 
 
 
 <div class="wrap" ng-controller="welcomeController">
-    <?php include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views\search_proccess.php'); ?>
+    <?php include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views/search_proccess.php'); ?>
     <div class="header">
         <div class="center">
             <a href="#" class="logo">
@@ -543,6 +543,29 @@
                             </div>
                         </div>                        
                     </div>
+                    <div class="user_info">
+                        <div class="row__wrap">
+                            <div class="row__item">
+                                <div class="item">
+                                    <div class="item__title">Имя</div>
+                                    <input type="text" class="input user_name">
+                                </div>
+                            </div>
+                            <div class="row__item row__item__crop">
+                                <div class="item">
+                                    <div class="item__title">Email</div>
+                                    <input type="text" class="input user_email">
+                                </div>
+                            </div>
+                            <div class="row__item">
+                                <div class="item">
+                                    <div class="item__title">Телефон</div>
+                                    <input type="text" class="input user_phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                     <div class="comment">
                         <div class="item">
                             <div class="item__title">Комментарий</div>

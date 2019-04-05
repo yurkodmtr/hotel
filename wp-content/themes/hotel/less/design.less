@@ -214,6 +214,7 @@ body {
 
 .datepick {
     position:relative;
+    float:none;
     .input {
         padding-right:40px!important;
     }
@@ -1030,12 +1031,16 @@ body {
                     max-width:48.5%;
                     margin-right:3%;   
                     @media screen and (max-width: 979px) {
-                        .flex-basis(@width: 100%);                    
+                        display:block;                     
                         width:100%;
                         max-width:100%;
                         margin-right:0px;
                         &:first-child {
                             margin-bottom:20px;
+                        }
+                        margin-bottom:30px;
+                        &:last-child {
+                            margin-bottom:0px;
                         }
                     } 
                     @media screen and (max-width: 767px) {
@@ -1084,9 +1089,43 @@ body {
                 }
             }
         }
+        .user_info {
+            width:48.5%;
+            float:right; 
+            margin-bottom:30px;
+            padding-top:20px;
+            margin-top:20px;
+            border-top:1px solid #cecece;
+            @media screen and (max-width: 979px) {
+                float:none;
+                width:100%;
+            }
+            .row__wrap {
+                .flex-basis(@width: 100%);                    
+                width:100%;
+                max-width:100%;
+                margin-right:0px; 
+                @media screen and (max-width: 979px) {
+                    .flex-basis(@width: 100%);                    
+                    width:100%;
+                    max-width:100%;
+                    margin-right:0px;
+                    &:first-child {
+                        margin-bottom:20px;
+                    }
+                } 
+                @media screen and (max-width: 767px) {
+                    display:block;
+                }  
+            }
+        }
         .comment { 
             width:48.5%;
             float:right;
+            @media screen and (max-width: 979px) {
+                width:100%;
+                float:none;
+            }
             .item {
                 &__title {
                     font-size:16px;

@@ -715,7 +715,30 @@ myApp.controller("welcomeController", function ($scope,$http) {
             personsIndex++;          
         });
 
-        if ( $('._book_block_person .input').hasClass('error') ) {
+        var userName = $('.user_name').val();
+        var userEmail = $('.user_email').val();
+        var userPhone = $('.user_phone').val();
+
+        if ( userName === '' ) {
+            $('.user_name').addClass('error');
+        } else {
+            $('.user_name').removeClass('error');
+        }
+
+        if ( userEmail === '' ) {
+            $('.user_email').addClass('error');
+        } else {
+            $('.user_email').removeClass('error');
+        }
+
+        if ( userPhone === '' ) {
+            $('.user_phone').addClass('error');
+        } else {
+            $('.user_phone').removeClass('error');
+        }
+
+
+        if ( $('._book_block_person .input').hasClass('error') || userName === '' || userEmail === '' || userPhone == '' ) {
             return false;
         }
 
@@ -832,6 +855,10 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var checkOutDate = $scope.outDateModel.split("-");
         checkOutDate = checkOutDate[2] + '-' + checkOutDate[1] + '-' + checkOutDate[0];
 
+        var userName = $('.user_name').val();
+        var userEmail = $('.user_email').val();
+        var userPhone = $('.user_phone').val();
+
         //mail
         $.ajax({
             url: urlAjax,
@@ -842,6 +869,10 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 data : {
                     persons : persons,
                     addHotel : {
+                        userName : userName,
+                        userEmail : userEmail,
+                        userPhone : userPhone,
+                        city : $scope.getCityName($scope.bookInfoOffer['hotel']['address']['city']['id']),
                         hotelId : $scope.bookInfoOffer['hotel']['id'],
                         hotelIdText : $scope.bookInfoOffer['hotel']['name'], 
                         contractGroupId : $scope.bookInfoDetailRoom['contractGroup']['id'],
@@ -874,10 +905,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
         });
 
         
-        console.log(1);
-        
-        return false;
-        console.log(2);
         //book
         $.ajax({
             url: urlAjax,

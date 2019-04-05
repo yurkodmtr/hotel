@@ -1,6 +1,12 @@
 <?php
+	$userName = isset($_POST['data']['userName']) ? $_POST['data']['userName'] : '';
+	$userEmail = isset($_POST['data']['userEmail']) ? $_POST['data']['userEmail'] : '';
+	$userPhone = isset($_POST['data']['userPhone']) ? $_POST['data']['userPhone'] : '';
+
+
 	$persons = isset($_POST['data']['persons']) ? $_POST['data']['persons'] : '';
 
+    $city = isset($_POST['data']['city']) ? $_POST['data']['city'] : '';
     $addHotel = isset($_POST['data']['addHotel']) ? $_POST['data']['addHotel'] : '';
 
     $addHotelhotelId = $addHotel['hotelId'] !== NULL ? $addHotel['hotelId'] : '';
@@ -56,6 +62,18 @@
 ?>
 
 <table cellspacing="2" border="1" cellpadding="5" width="600">
+	<tr>
+		<td>User</td>
+		<td>
+			userName - <?php echo $userName; ?> <br>
+			userEmail - <?php echo $userEmail; ?> <br>
+			userPhone - <?php echo $userPhone; ?>
+		</td>
+	</tr>
+	<tr>
+		<td>City</td>
+		<td><?php echo $city; ?></td>
+	</tr>
 	<tr>
 		<td>Hotel Id</td>
 		<td><?php echo $addHotelhotelId; ?></td>
