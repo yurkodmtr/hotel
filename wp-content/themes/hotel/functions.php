@@ -116,8 +116,6 @@ add_action('wp_ajax_booking', 'booking');
 add_action('wp_ajax_nopriv_booking', 'booking');  
 function booking(){
 
-
-
     if ( !isset($_POST['data']) ) {
         echo "bad params";
         die();
@@ -202,64 +200,6 @@ function booking(){
             'version' => 1,
         ],
     );
-    
-    // echo "<pre>";
-    // print_r($parameters);
-    // echo "</pre>";
-    // die();
-    
-    // $parameterss = array(
-    //     'outOperatorIncID' => $AuthCompanyId,
-    //     'actions' => [
-    //         'addPerson' => [
-    //             'index' => 0,
-    //             'person' => [
-    //                 'outId' => 701,
-    //                 'name' => 'a1',
-    //                 'surname' => 'a2',
-    //             ],
-    //         ],
-    //         'addHotel' => [
-    //             'index' => 1,
-    //             'serviceOutId' => 445,
-    //             'hotelId' => 122970,
-    //             'contractGroupId' => 981308004,
-    //             'roomId' => 935190269, 
-    //             'startDate' => '2019-04-02',
-    //             'endDate' => '2019-04-03',
-    //             'earlyBooking' => false,
-    //             'hotelPerson' => [
-    //                 'personOutId' => 701,
-    //                 'mealTypeId' => 1,
-    //                 'allocationType' => 'base',
-    //                 'ageType' => 'adult',
-    //             ],
-    //             'price' => [
-    //                 'availability' => 'available',
-    //                 'totalPrice' => '154.5',
-    //                 'currencyCode' => 'EUR',
-    //             ],
-    //             'penaltyKey' => [
-    //                 'id' => 13014,
-    //                 'nonRefundable' => false,
-    //             ],
-    //         ],
-    //         'addRequestComment' => [
-    //             'index' => 2,
-    //             'comment' => 'test',
-    //         ],
-    //     ],
-    //     'requestVersion' => [
-    //         'outId' => time(),
-    //         'version' => 1,
-    //     ], 
-    // );
-    
-    // echo "<pre>";
-    // print_r($parameterss);
-    // echo "</pre>";
-    // die();
-
 
     $client = new SoapClient("http://test.bestoftravel.cz:8080/booking/public/ws/book.wsdl", array( 'trace' => 1));
     $client->__setSoapHeaders(Array(new WsseAuthHeader($AuthUser, $AuthPassword)));
@@ -271,10 +211,6 @@ function booking(){
     catch (Exception $ex) {
         echo $ex->getMessage();
     }
-    die();
-
-    $data = json_encode($client->book($parameters));
-    echo $data;
     die();
 }
 //booking();
