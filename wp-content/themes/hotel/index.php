@@ -700,6 +700,29 @@
                             </div>
                         </div>                        
                     </div>
+                    <div class="user_info">
+                        <div class="row__wrap">
+                            <div class="row__item">
+                                <div class="item">
+                                    <div class="item__title">Имя</div>
+                                    <input type="text" class="input" disabled="true" value="{{userInfo['userName']}}">
+                                </div>
+                            </div>
+                            <div class="row__item row__item__crop">
+                                <div class="item">
+                                    <div class="item__title">Email</div>
+                                    <input type="text" class="input" disabled="true" value="{{userInfo['userEmail']}}">
+                                </div>
+                            </div>
+                            <div class="row__item">
+                                <div class="item">
+                                    <div class="item__title">Телефон</div>
+                                    <input type="text" class="input" disabled="true" value="{{userInfo['userPhone']}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                     <div class="comment">
                         <div class="item">
                             <div class="item__title">Комментарий</div>
@@ -743,6 +766,19 @@
                 </div> 
             </div>
         </div> 
+    </div>
+
+    <div class="responce_block responce_block__success" id="responce_block__success">
+        <div class="center">
+            Ваша заявка принята! <br>
+            Номер заявки - {{bookIdNumber}} 
+        </div>
+    </div>
+
+    <div class="responce_block responce_block__error" id="responce_block__error">
+        <div class="center">
+            Произошла ошибка. Пожалуйста, попробуйте позже
+        </div>
     </div>
 
     <div class="featured">

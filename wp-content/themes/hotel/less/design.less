@@ -1794,6 +1794,7 @@ body {
                 .confirm_btn {
                     margin-bottom:20px;
                     a {
+                        position:relative;
                         display:inline-block;
                         background:#f00952;
                         font-size:16px;
@@ -1804,13 +1805,28 @@ body {
                         height:56px;
                         line-height:56px;
                         .rounded(5px);
-                        padding:0px 25px;
+                        padding:0px 35px;
                         cursor:pointer;
                         .opacity(1);
                         .transition(0.2s);
                         &:hover {
                             .opacity(0.85);
                         }
+                        &:before {
+                            content:'';
+                            display:none;
+                            width:16px;
+                            height:16px;
+                            position:absolute;
+                            left:10px;
+                            top:19px;
+                            background:url(../images/loader.png) no-repeat top center;
+                        }
+                        &.loading {
+                            &:before {
+                                display:block;
+                            }
+                        } 
                     }                    
                 }
                 .agree_block {
@@ -1873,6 +1889,13 @@ body {
             }
         }         
     }
+}
+
+.responce_block {
+    padding:50px 0px;
+    text-align:center;
+    font-size:22px;
+    display:none;
 }
 
 .clear {

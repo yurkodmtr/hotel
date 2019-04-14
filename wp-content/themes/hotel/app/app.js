@@ -5,6 +5,14 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.personsToConfirm;
 
+    $scope.userInfo = {
+        userName: '',
+        userEmail: '',
+        userPhone: '',
+    }
+
+    $scope.bookIdNumber;
+
     $scope.currentPage = 1;
 
     $scope.inDateModel;
@@ -719,6 +727,12 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var userEmail = $('.user_email').val();
         var userPhone = $('.user_phone').val();
 
+        $scope.userInfo = {
+            userName: userName,
+            userEmail: userEmail,
+            userPhone: userPhone, 
+        }
+
         if ( userName === '' ) {
             $('.user_name').addClass('error');
         } else {
@@ -855,9 +869,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
         var checkOutDate = $scope.outDateModel.split("-");
         checkOutDate = checkOutDate[2] + '-' + checkOutDate[1] + '-' + checkOutDate[0];
 
-        var userName = $('.user_name').val();
-        var userEmail = $('.user_email').val();
-        var userPhone = $('.user_phone').val();
+        $('.confirm_btn a').addClass('loading');
 
         //mail
         $.ajax({
@@ -869,9 +881,9 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 data : {
                     persons : persons,
                     addHotel : {
-                        userName : userName,
-                        userEmail : userEmail,
-                        userPhone : userPhone,
+                        userName : $scope.userInfo['userName'],
+                        userEmail : $scope.userInfo['userEmail'],
+                        userPhone : $scope.userInfo['userPhone'],
                         city : $scope.getCityName($scope.bookInfoOffer['hotel']['address']['city']['id']),
                         hotelId : $scope.bookInfoOffer['hotel']['id'],
                         hotelIdText : $scope.bookInfoOffer['hotel']['name'], 
@@ -904,7 +916,6 @@ myApp.controller("welcomeController", function ($scope,$http) {
             }
         });
 
-        
         //book
         $.ajax({
             url: urlAjax,
@@ -938,9 +949,28 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 },
             },
             success: function(data) {
-                console.log('1 - ', data);
+                $('.confirm_btn a').removeClass('loading');
+                if ( typeof data['request'] !== undefined && typeof data['request']['number'] !== undefined  ) {
+                    $scope.bookIdNumber = data['request']['number'];
+                    $scope.$apply();
+                    $('.confirm_block').hide();
+                    $('.responce_block__success').show();
+                    var scrollTo = $('#responce_block__success').offset().top;
+                    $('html, body').animate({
+                        scrollTop: scrollTo,
+                    }, 1000);
+                    return false;
+                }
+
+                $('.confirm_block').hide();
+                $('.responce_block__error').show();
+                var scrollTo = $('#responce_block__error').offset().top;
+                $('html, body').animate({
+                    scrollTop: scrollTo,
+                }, 1000);
             },
             error: function(data) {
+                $('.confirm_btn a').removeClass('loading');
                 console.log('2 - ', data);
             }
         });

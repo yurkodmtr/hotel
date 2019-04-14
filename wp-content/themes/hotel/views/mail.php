@@ -1,7 +1,7 @@
 <?php
-	$userName = isset($_POST['data']['userName']) ? $_POST['data']['userName'] : '';
-	$userEmail = isset($_POST['data']['userEmail']) ? $_POST['data']['userEmail'] : '';
-	$userPhone = isset($_POST['data']['userPhone']) ? $_POST['data']['userPhone'] : '';
+	$userName = isset($_POST['data']['addHotel']['userName']) ? $_POST['data']['addHotel']['userName'] : '';
+	$userEmail = isset($_POST['data']['addHotel']['userEmail']) ? $_POST['data']['addHotel']['userEmail'] : '';
+	$userPhone = isset($_POST['data']['addHotel']['userPhone']) ? $_POST['data']['addHotel']['userPhone'] : '';
 
 
 	$persons = isset($_POST['data']['persons']) ? $_POST['data']['persons'] : '';
