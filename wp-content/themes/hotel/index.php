@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="item item__crop">
-                    <div class="title">Взрослые</div>
+                    <div class="title">Кол-во взрослых</div>
                     <select class="_adults select" ng-model="adults">
                         <option ng-repeat="option in adultsList" value="{{option}}">{{option}}</option>             
                     </select>
@@ -141,7 +141,7 @@
                 </div>
 
                 <div class="item item__crop">
-                    <div class="title">Дети</div>
+                    <div class="title">Кол-во детей</div>
                     <select class="_children select" ng-model="children" ng-change="childrenSelect()">      
                         <?php for ($i=0;$i<=4;$i++) : ?>
                         <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="children_age item item__crop" ng-repeat="item in childrenAgeArray">
-                    <div class="title">Возраст</div>
+                    <div class="title">Возраст детей</div>
                     <select class="select">
                         <?php for ($i=0;$i<=18;$i++) : ?>
                         <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="row">
                     <div class="row__title">
-                        Категория
+                        Категория отеля
                     </div>                
                     <div class="label_wrap">
                         <label>
@@ -260,7 +260,9 @@
                                 <figure>
                                     <img ng-src="{{getMainImage(item['hotel']['image'])}}">
                                 </figure>
-                                <a href="#">Фото и описание отеля >>></a>
+                                <a data-href="http://www.google.com/{{item['hotel']['id']}}" class="_open_modal">
+                                    Фото и описание отеля >>>>                                        
+                                </a>
                             </div>
                             <div class="right_side">
 
@@ -270,7 +272,7 @@
                                     ng-if="checkIsShowRoom(itemRoom['id'],item['room'])"
                                 >
                                     <div class="room__title" ng-if="checkIsShowRoomTitle(itemRoom['id'],item['room'])">
-                                        {{itemRoom['name']}}
+                                        <b>Тип номера:</b> {{itemRoom['name']}}
                                     </div>     
                                     <div class="room__item" 
                                     ng-repeat="detailRoomItem in checkIsArray(item['room'])" 
@@ -498,19 +500,19 @@
                             <div class="row__wrap">
                                 <div class="row__item">
                                     <div class="item">
-                                        <div class="item__title">Имя</div>
+                                        <div class="item__title">Имя*</div>
                                         <input type="text" class="input name">
                                     </div>
                                 </div>
                                 <div class="row__item">
                                     <div class="item">
-                                        <div class="item__title">Фамилия</div>
+                                        <div class="item__title">Фамилия*</div>
                                         <input type="text" class="input lname">
                                     </div>
                                 </div>
                                 <div class="row__item row__item__crop">
                                     <div class="item">
-                                        <div class="item__title">Дата рождения</div>
+                                        <div class="item__title">Дата рождения{{person['ageType'] === 'child' ? '*' : ''}}</div>
                                         <datepicker class="datepick" date-format="dd-MM-yyyy">
                                             <input 
                                                 type="text" 
@@ -544,22 +546,23 @@
                         </div>                        
                     </div>
                     <div class="user_info">
+                        <div class="user_info__title">Контактное лицо</div>
                         <div class="row__wrap">
                             <div class="row__item">
                                 <div class="item">
-                                    <div class="item__title">Имя</div>
+                                    <div class="item__title">Имя*</div>
                                     <input type="text" class="input user_name">
                                 </div>
                             </div>
                             <div class="row__item row__item__crop">
                                 <div class="item">
-                                    <div class="item__title">Email</div>
+                                    <div class="item__title">Email*</div>
                                     <input type="text" class="input user_email">
                                 </div>
                             </div>
                             <div class="row__item">
                                 <div class="item">
-                                    <div class="item__title">Телефон</div>
+                                    <div class="item__title">Телефон*</div>
                                     <input type="text" class="input user_phone">
                                 </div>
                             </div>
@@ -568,7 +571,7 @@
                     <div class="clear"></div>
                     <div class="comment">
                         <div class="item">
-                            <div class="item__title">Комментарий</div>
+                            <div class="item__title">Комментарий к заказу</div>
                             <textarea class="textarea comment" rows="5"></textarea>
                         </div>
                     </div>
@@ -701,6 +704,7 @@
                         </div>                        
                     </div>
                     <div class="user_info">
+                        <div class="user_info__title">Контактное лицо</div>
                         <div class="row__wrap">
                             <div class="row__item">
                                 <div class="item">
@@ -725,7 +729,7 @@
                     <div class="clear"></div>
                     <div class="comment">
                         <div class="item">
-                            <div class="item__title">Комментарий</div>
+                            <div class="item__title">Комментарий к заказу</div>
                             <textarea class="textarea comment _comment" rows="5" disabled="true"></textarea>
                         </div>
                     </div>
@@ -894,7 +898,8 @@
                         &copy; 2016 WellCo d.o.o.
                     </div>
                     <div class="link">
-                        <a href="#">Договор оферты</a>
+                        <a href="#">Договор оферты</a><br>
+                        <a href="#">Политика конфиденциальности</a>
                     </div>
                 </div>
                 <div class="item">

@@ -246,7 +246,7 @@ function mailChimp(){
 
     $email = isset($_POST['email']) ? $_POST['email'] : 'test@test.com';
     // MailChimp API credentials
-    $apiKey = '8d66e4f6bf7368bb99f7d1ef813936b1-us6';
+    $apiKey = '485d06530d535889879df4b30948cc87-us6';
     $listID = '7ff7cc295d';
     // MailChimp API URL
     $memberID = md5(strtolower($email));
