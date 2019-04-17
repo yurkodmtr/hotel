@@ -224,7 +224,7 @@ function bookInfoToEmail(){
         die();
     }
 
-    $to = '4au.4au.4au@gmail.com'; //wellcotravel@gmail.com
+    $to = 'wellcotravel@gmail.com'; //wellcotravel@gmail.com
     $subject = 'online.bestslovenia.com - book event';
 
     ob_start();
