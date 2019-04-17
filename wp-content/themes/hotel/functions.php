@@ -246,7 +246,7 @@ function mailChimp(){
 
     $email = isset($_POST['email']) ? $_POST['email'] : 'test@test.com';
     // MailChimp API credentials
-    $apiKey = '8d66e4f6bf7368bb99f7d1ef813936b1-us6';
+    $apiKey = '485d06530d535889879df4b30948cc87-us6';
     $listID = '7ff7cc295d';
     // MailChimp API URL
     $memberID = md5(strtolower($email));
@@ -284,5 +284,92 @@ function mailChimp(){
         }        
     }
     echo $response;
+    die();
+}
+
+
+
+function pullLocations(){
+    $cacheId = 'pullLocations';
+    $cache = new FileCache(array(
+        'name' => $cacheId,
+        'path' => dirname(__FILE__) . DIRECTORY_SEPARATOR,
+        'extension' => '.json'
+    ));
+    $cache->eraseExpired();
+    $cacheData = $cache->retrieve($cacheId);
+
+    if ($cacheData === null || $_GET['clear_locations']) {
+       
+        include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'auth.php');    
+        $client = new SoapClient("http://test.bestoftravel.cz:8080/booking/public/ws/syncLocation.wsdl", array( 'trace' => 1));
+        $client->__setSoapHeaders(Array(new WsseAuthHeader($AuthUser, $AuthPassword)));
+
+
+
+        $cacheData = json_encode($client->pullLocations());
+        $cache->store($cacheId, $cacheData, 86400);    
+    }
+
+    $data = json_decode($cacheData,true)['location'];
+
+    // 118593 id slovenia
+    $allLocationsOfSlovenia = [];
+    $index = 0;
+    foreach ($data as $key => $value) {
+        if ( $value['parent_id'] == '118593' ) {
+            if ( $value['type'] == 'city' ) {
+                $allLocationsOfSlovenia[$index] = [
+                    'name' => $value['names']['ru'],
+                    'id' => $value['id'],
+                ];
+                $index++;
+            }
+        }
+    }
+
+    $stateIds;
+    $stateIdsIndex = 0;
+    foreach ($data as $key => $value) {
+        if ( $value['parent_id'] == '118593' ) {
+            if ( $value['type'] == 'state_province' ) {
+                $stateIds[$stateIdsIndex] = $value['id'];
+                $stateIdsIndex++;
+            }
+        }
+    }
+
+    $zoneIds = [];
+    $zoneIdsIndex = 0;
+    foreach ($data as $key => $value) {
+        if ( $value['parent_id'] == '118593' ) {
+            if ( $value['type'] == 'zone' ) {
+                $zoneIds[$zoneIdsIndex] = $value['id'];
+                $zoneIdsIndex++;
+            }
+        }
+    }
+
+    foreach ($data as $key => $value) {
+        if ( in_array($value['parent_id'],$stateIds) && $value['type'] == 'city' ) {
+            $allLocationsOfSlovenia[$index] = [
+                'name' => $value['names']['ru'],
+                'id' => $value['id'],
+            ];
+            $index++;
+        }
+    }
+
+    foreach ($data as $key => $value) {
+        if ( in_array($value['parent_id'],$zoneIds) && $value['type'] == 'city' ) {
+            $allLocationsOfSlovenia[$index] = [
+                'name' => $value['names']['ru'],
+                'id' => $value['id'],
+            ];
+            $index++;
+        }
+    }
+
+    echo json_encode($allLocationsOfSlovenia);
     die();
 }

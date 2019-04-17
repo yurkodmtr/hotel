@@ -2,6 +2,25 @@
 
 var myFunc = function(){
 
+	var removePlaceholder = function () {
+	    $('input,textarea').focus(function () {
+	        $(this).data('placeholder', $(this).attr('placeholder')).attr('placeholder', '');
+	    }).blur(function () {
+	        $(this).attr('placeholder', $(this).data('placeholder'));
+	    });
+	}
+
+	var sameHeight = function(item){
+		item.css('height','auto');
+		var maxHeight = 0;
+		item.each(function(){
+			if ( $(this).outerHeight() > maxHeight ) {
+				maxHeight = $(this).outerHeight();
+			}
+		});
+		item.css('height', maxHeight + 'px');
+	}
+
 	var popClose = function(){
 		$('._pop_close').click(function(){
 			$('.pop').fadeOut('slow');
@@ -57,8 +76,32 @@ var myFunc = function(){
 		});
 	}
 	
+	var openModal = function(){
+		$('body').on('click', '._open_modal', function (){
+			var url = $(this).data('href');
+
+			var wWidth = Math.round($(window).width());
+			var wHeight = Math.round($(window).height());
+
+			var modalWidth = Math.round(wWidth * 0.6);
+			var modalHeight = Math.round(wHeight * 0.8);
+
+			var left = Math.round((wWidth - modalWidth)/2);
+			var top = Math.round((wHeight - modalHeight)/2);
+
+			console.log(wWidth);
+			console.log(modalWidth);
+			console.log(left);
+
+  			return window.open(url,'title','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+modalWidth+', height='+modalHeight+', top='+top+', left='+left);
+
+		});
+	}
 
 	$(document).ready(function(){
+		openModal();
+		removePlaceholder();
+		sameHeight($('.footer_block .links .item .title'));
 		agreeCheckbox();
 		popClose();
 		tooltip();
@@ -67,7 +110,7 @@ var myFunc = function(){
 	});
 
 	$(window).resize(function(){
-		
+		sameHeight($('.footer_block .links .item .title'));
 	});
 
 	$(window).load(function(){

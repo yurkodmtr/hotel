@@ -249,7 +249,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 childrenAges : childrenAges
             },
             success: function(data) {
-
+                console.log(data);
                 var offersToSplice = [];
                 if (!$.isEmptyObject(data) && data['hotelOffers'] != undefined) {
                     $.each( $scope.checkIsArray(data['hotelOffers']), function( index, offerItem ) {
