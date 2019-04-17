@@ -91,6 +91,7 @@
 
     <div class="welcome" style="background-image: url(<?php echo get_template_directory_uri();?>/images/welcome_bg.jpg);">
         <div class="center">
+            <h1>Забронируйте отдых в Словении</h1>
             <form class="search_form clearfix">
                 <div class="item">
                     <div class="title">Страна</div>
@@ -115,9 +116,9 @@
                         <input ng-model="inDateModel" type="text" class="input" ng-change="dateChange(inDateModel,outDateModel)"/>
                     </datepicker>
                 </div>
-                <div class="item item__crop">
+                <div class="item item__crop item__crop__no_mar">
                     <div class="title">Дата выезда</div>
-                    <datepicker class="datepick" date-set="{{outDate}}" date-format="dd-MM-yyyy">
+                    <datepicker class="datepick datepick__out" date-set="{{outDate}}" date-format="dd-MM-yyyy">
                         <input ng-model="outDateModel" type="text" class="input" ng-change="dateChange(inDateModel,outDateModel)"/>
                     </datepicker>
                 </div>
@@ -128,14 +129,14 @@
                     </select>
                 </div>
 
-                <div class="item item__crop">
+                <div class="item item__crop item__crop__no_mar">
                     <div class="title">Кол-во взрослых</div>
                     <select class="_adults select" ng-model="adults">
                         <option ng-repeat="option in adultsList" value="{{option}}">{{option}}</option>             
                     </select>
                 </div>
 
-                <div class="item item__no_mar">
+                <div class="item item__no_mar item__submit">
                     <div class="title">&nbsp;</div>
                     <button ng-click="searchHotels()" class="submit">Найти лучшие цены</button>
                 </div>
@@ -149,8 +150,12 @@
                     </select>
                 </div>
 
-                <div class="children_age item item__crop" ng-repeat="item in childrenAgeArray">
-                    <div class="title">Возраст детей</div>
+                <div 
+                    class="children_age item item__crop" 
+                    ng-repeat="item in childrenAgeArray"
+                    ng-class="($index == '0' || $index == '2') ? 'item__crop__no_mar' : ''"
+                >
+                    <div class="title">Возраст ребенка</div>
                     <select class="select">
                         <?php for ($i=0;$i<=18;$i++) : ?>
                         <option value="<?php echo $i; ?>"><?php echo $i; ?></option>

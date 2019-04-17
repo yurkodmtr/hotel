@@ -221,17 +221,12 @@ body {
         position:relative;
         background:url(../images/datepick.png) no-repeat right center #FFF;
     }
-    // &:before {
-    //     content:'';
-    //     display:block;
-    //     width:28px;
-    //     height:30px;
-    //     position:absolute;
-    //     right:10px;
-    //     top:50%;
-    //     .translate(@y:-50%);
-    //     background:url(../images/datepick.png) no-repeat top center;
-    // }
+    &__out {
+        ._720kb-datepicker-calendar {
+            left:auto;
+            right:0px;
+        }
+    }
 }
 
 .welcome {
@@ -242,29 +237,64 @@ body {
     -o-background-size: cover;
     background-size: cover;    
     padding:200px 0px 100px 0px;
-    .search_form {        
+    @media screen and (max-width: 979px) {
+        padding:100px 0px 70px;
+    }
+    h1 {
+        color:#FFF;
+        font-size:30px;
+        line-height:34px;
+        font-weight:500;
+        margin-bottom:50px;
+        @media screen and (max-width: 979px) {
+            font-size:24px;
+            line-height:28px;
+            margin-bottom:30px;
+        }
+    }
+    .search_form {    
+        position:relative;
+        @media screen and (max-width: 979px) {
+            max-width:400px;
+            width:100%;
+            margin:0 auto;
+            padding-bottom:100px;
+        }     
         .item {
             width:31.62393162393162%;
             float:left;
             margin-right:2.564102564102564%;
             margin-bottom:30px;
+            @media screen and (max-width: 979px) {
+                float:none;
+                width:100%;
+                margin-right:0px;
+            }
             &__no_mar {
                 margin-right:0px;
             }
             &__crop {
                 width:14.52991452991453%;
+                @media screen and (max-width: 979px) {
+                    float:left;
+                    width:48.5%;
+                    margin-right:3%;
+                    &__no_mar {
+                        margin-right:0px;
+                    }
+                }
             }
             .title {
                 color:#FFF;
-                font-size:16px;
+                font-size:14px;
                 margin-bottom:10px;
             }
             .input {
                 width:100%;
-                height:56px;
-                line-height:56px;
+                height:50px;
+                line-height:50px;
                 background-color:#FFF;
-                font-size:16px;
+                font-size:14px;
                 color:#101010;
                 .placeholder(#101010);
                 padding:0px 15px;
@@ -276,9 +306,9 @@ body {
             }
             .select {
                 width:100%;
-                height:56px;
-                line-height:56px;
-                font-size:16px;
+                height:50px;
+                line-height:50px;
+                font-size:14px;
                 color:#101010;
                 .placeholder(#101010);
                 padding:0px 0px 0px 15px;
@@ -288,7 +318,14 @@ body {
                 &.disabled {
                     background:url(../images/select_loader.png) no-repeat 95% center #FFF;
                 }
-            }            
+            }    
+            &__submit {
+                @media screen and (max-width: 979px) {
+                    position:absolute;
+                    left:0px;
+                    bottom:0px;
+                }
+            }        
         }
         .submit {
             display:block;
@@ -299,8 +336,8 @@ body {
             color:#FFF;
             text-align:center;
             .shadow;
-            height:56px;
-            line-height:56px;
+            height:50px;
+            line-height:50px;
             .rounded(56px);
             padding:0px 25px;
             cursor:pointer;
