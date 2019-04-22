@@ -81,7 +81,7 @@ body {
         width:100%;
         text-align:center;
         color:#FFF;
-        font-size:30px; 
+        font-size:20px; 
         z-index:0;
         @media screen and (max-width: 979px) {
             display:none;
@@ -107,10 +107,8 @@ body {
             &:hover {
                 text-decoration:none;
             }
-            @media screen and (max-width: 767px) {
-                display:block;
-                margin-bottom:10px;
-                margin-right:0px;
+            @media screen and (max-width: 979px) {
+                display:none;
             }
         }
         .burger {
@@ -242,8 +240,8 @@ body {
     }
     h1 {
         color:#FFF;
-        font-size:30px;
-        line-height:34px;
+        font-size:36px;
+        line-height:38px;
         font-weight:500;
         margin-bottom:50px;
         @media screen and (max-width: 979px) {
@@ -963,7 +961,7 @@ body {
                         .link {
                             a {
                                 font-size:18px;
-                                color:#ff003c;
+                                color:#0dbf00;
                                 font-weight:500;
                                 &:hover {
                                     text-decoration:underline;
@@ -1040,6 +1038,13 @@ body {
             font-weight:500;
             color:#101010;
             margin-bottom:20px;
+            span {
+                font-size:16px;
+                @media screen and (max-width: 767px) {
+                    display:block;
+                    padding-top:10px;
+                }
+            }
         }
         .form_tourists {
             background:#f1f1f1;
@@ -1113,7 +1118,7 @@ body {
                             padding-right:0px;
                         }
                         .item__title {
-                            font-size:16px;
+                            font-size:14px;
                             color:#101010;
                             margin-bottom:5px;
                         }
@@ -1122,9 +1127,9 @@ body {
                             padding:16px 15px 16px 15px;
                             background-color:#FFF;
                             .rounded(3px);
-                            font-size:16px;
+                            font-size:14px;
                             color:#070707;
-                            .placeholder(#070707);
+                            .placeholder(#cecece);
                             .shadow;
                             &.error {
                                 .bordercolor(#ff0000);
@@ -1178,7 +1183,7 @@ body {
             }
             .item {
                 &__title {
-                    font-size:16px;
+                    font-size:14px;
                     color:#101010;
                     margin-bottom:5px;
                 }
@@ -1187,11 +1192,10 @@ body {
                     padding:16px 15px 16px 15px;
                     background:#FFF;
                     .rounded(3px);
-                    font-size:16px;
+                    font-size:14px;
                     color:#070707;
                     .placeholder(#070707);
                     .shadow;
-                    resize:none;
                     border:none;
                     &.error {
                         .bordercolor(#ff0000);
@@ -1488,6 +1492,7 @@ body {
             }
             .link {
                 a {
+                    font-weight: 300; 
                     display:inline-block;
                     margin-bottom:10px;
                     &:last-child {
@@ -1517,6 +1522,7 @@ body {
             }
         }
         &:nth-child(3) {
+            font-weight: 300; 
             width:29%;
             @media screen and (max-width: 979px) {
                 width:48.5%;
@@ -1550,6 +1556,7 @@ body {
                 margin-bottom:10px;
                 span {
                     display:block;
+                    font-weight: 300; 
                 }
             }
             .soc {
@@ -1786,13 +1793,13 @@ body {
                 padding-right:0px;
             }
             &__title {
-                font-size:20px;
+                font-size:18px;
                 font-weight:500;
                 color:#0a0a0a;
                 margin-bottom:10px;
             }
             &__descr {
-                font-size:18px;
+                font-size:14px;
                 color:#0a0a0a;
             }
         }
@@ -1804,7 +1811,7 @@ body {
             padding-top:50px;
             .flex-display(@display: flex);
             .justify-content(@justify: space-between);
-            .align-items(@align: flex-end);
+            .align-items(@align: flex-start);
             .flex-direction(@direction: row-reverse);
             @media screen and (max-width: 767px) {
                 display:block;

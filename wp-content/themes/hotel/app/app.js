@@ -99,7 +99,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 action:'getAllCities'
             },
             success: function(data) {
-                $scope.cityList = JSON.parse(data);
+                $scope.cityList = $scope.checkIsArray(JSON.parse(data));
                 $scope.cityList.unshift({id: '118593',name: 'все города'});
                 $scope.$apply();
             },
@@ -142,7 +142,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
             },
             success: function(data) {
                 var data = JSON.parse(data);
-                $scope.hotelsByCity = data.hotel; 
+                $scope.hotelsByCity = $scope.checkIsArray(data.hotel); 
                 $scope.hotelsByCity.unshift({id: '',name: 'все отели'});
                 $scope.disabledHotelSelect = false;                 
                 $scope.$apply();
@@ -168,7 +168,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 $scope.disabledHotelSelect = false;
                 var data = JSON.parse(data);
                 if ( typeof data.hotel !== 'undefined') {
-                    $scope.hotelsByCity = data.hotel;   
+                    $scope.hotelsByCity = $scope.checkIsArray(data.hotel);  
                     $scope.hotelsByCity.unshift({id: '',name: 'все отели'});               
                 } else {
                     $scope.hotelsByCity = [
@@ -696,7 +696,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 isError = false;
             }
 
-            if ( $(this).find('.birthday').hasClass('_child') &&  birthday === '') {
+            if ( birthday === '') {
                 $(this).find('.birthday').addClass('error');
                 isError = true;
             } else {
