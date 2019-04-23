@@ -30,7 +30,7 @@
 <div class="wrap" ng-controller="welcomeController">
     <?php include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views/search_proccess.php'); ?>
 
-
+    <input type="text" class="latin_input" style="padding:20px;border:1px solid red;">
     <?php if (have_posts()): while (have_posts()) : the_post(); ?>
         <?php the_content(); ?>
         <?php endwhile; ?>
