@@ -423,19 +423,19 @@
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Имя*</div>
-                                        <input type="text" class="input name">
+                                        <input type="text" class="input name latin_input" placeholder="Ivan">
                                     </div>
                                 </div>
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Фамилия*</div>
-                                        <input type="text" class="input lname">
+                                        <input type="text" class="input lname latin_input" placeholder="Ivanov">
                                     </div>
                                 </div>
                                 <div class="row__item row__item__crop">
                                     <div class="item">
                                         <div class="item__title">Дата рождения*</div>
-                                        <input type="text" class="input birthday" placeholder="20.07.1987">
+                                        <input type="text" class="input birthday" placeholder="31.12.1987">
                                     </div>
                                 </div>
                             </div>
@@ -455,7 +455,7 @@
                                 <div class="row__item">
                                     <div class="item">
                                         <div class="item__title">Гражданство (3 буквы)*</div>
-                                        <input type="text" class="input citizenship" placeholder="RUS/UKR/KAZ/BEL">
+                                        <input type="text" class="input citizenship latin_input" placeholder="RUS/UKR/KAZ/BEL">
                                     </div>
                                 </div>
                             </div>

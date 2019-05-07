@@ -668,6 +668,17 @@ myApp.controller("welcomeController", function ($scope,$http) {
 
     $scope.dataToBook = {};
 
+    $scope.validateEmail = function(email){
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    $scope.validateDate = function(date){
+        var re = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+        return re.test(String(date));
+    }
+
+
     $scope.preCompleteBook = function(){
         var persons = [];
         var personsIndex = 1;
@@ -696,7 +707,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 isError = false;
             }
 
-            if ( birthday === '') {
+            if ( birthday === '' || !$scope.validateDate(birthday)) {
                 $(this).find('.birthday').addClass('error');
                 isError = true;
             } else {
@@ -704,10 +715,35 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 isError = false;
             }
 
+            if ( exp === '' || !$scope.validateDate(exp)) {
+                $(this).find('.exp').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.exp').removeClass('error');
+                isError = false;
+            }
+
+            if ( citizenship === '' ) {
+                $(this).find('.citizenship').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.citizenship').removeClass('error');
+                isError = false;
+            }
+
+            if ( serialnum === '' ) {
+                $(this).find('.serialnum').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.serialnum').removeClass('error');
+                isError = false;
+            }
+
             if (birthday !== '') {
-                birthday = birthday.split("-");
+                birthday = birthday.split(".");
                 birthday = birthday[2] + '-' + birthday[1] + '-' + birthday[0];
-            }            
+            }    
+
 
             if (isError === false ) {
                 persons.push({
@@ -723,9 +759,35 @@ myApp.controller("welcomeController", function ($scope,$http) {
             personsIndex++;          
         });
 
+
         var userName = $('.user_name').val();
         var userEmail = $('.user_email').val();
         var userPhone = $('.user_phone').val();
+        
+        var userError = false;
+        if ( userName === '' ) {
+            $('.user_name').addClass('error');
+            userError = true;
+        } else {
+            $('.user_name').removeClass('error');
+            userError = false;
+        }
+
+        if ( userEmail === '' || !$scope.validateEmail(userEmail) ) {
+            $('.user_email').addClass('error');
+            userError = true;
+        } else {
+            $('.user_email').removeClass('error');
+            userError = false;
+        }
+
+        if ( userPhone === '' ) {
+            $('.user_phone').addClass('error');
+            userError = true;
+        } else {
+            $('.user_phone').removeClass('error');
+            userError = false;
+        }
 
         $scope.userInfo = {
             userName: userName,
@@ -733,26 +795,8 @@ myApp.controller("welcomeController", function ($scope,$http) {
             userPhone: userPhone, 
         }
 
-        if ( userName === '' ) {
-            $('.user_name').addClass('error');
-        } else {
-            $('.user_name').removeClass('error');
-        }
 
-        if ( userEmail === '' ) {
-            $('.user_email').addClass('error');
-        } else {
-            $('.user_email').removeClass('error');
-        }
-
-        if ( userPhone === '' ) {
-            $('.user_phone').addClass('error');
-        } else {
-            $('.user_phone').removeClass('error');
-        }
-
-
-        if ( $('._book_block_person .input').hasClass('error') || userName === '' || userEmail === '' || userPhone == '' ) {
+        if ( $('._book_block_person .input').hasClass('error') || userError === true ) {
             return false;
         }
 
@@ -790,7 +834,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
     $scope.completeBook = function(){
 
         if ( !$('.confirm_block .agree').hasClass('act') ) {
-            $('.confirm_block .agree').addClass('error');
+            $(this).addClass('error');
             return false;
         }
 
@@ -823,7 +867,7 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 isError = false;
             }
 
-            if ( $(this).find('.birthday').hasClass('_child') &&  birthday === '') {
+            if ( birthday === '' || !$scope.validateDate(birthday)) {
                 $(this).find('.birthday').addClass('error');
                 isError = true;
             } else {
@@ -831,10 +875,35 @@ myApp.controller("welcomeController", function ($scope,$http) {
                 isError = false;
             }
 
+            if ( exp === '' || !$scope.validateDate(exp)) {
+                $(this).find('.exp').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.exp').removeClass('error');
+                isError = false;
+            }
+
+            if ( citizenship === '' ) {
+                $(this).find('.citizenship').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.citizenship').removeClass('error');
+                isError = false;
+            }
+
+            if ( serialnum === '' ) {
+                $(this).find('.serialnum').addClass('error');
+                isError = true;
+            } else {
+                $(this).find('.serialnum').removeClass('error');
+                isError = false;
+            }
+
             if (birthday !== '') {
-                birthday = birthday.split("-");
+                birthday = birthday.split(".");
                 birthday = birthday[2] + '-' + birthday[1] + '-' + birthday[0];
-            }            
+            }    
+
 
             if (isError === false ) {
                 persons.push({
